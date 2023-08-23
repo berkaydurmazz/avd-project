@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Araba Yorumları Sorgulama</title>
+    <style>
+        /* Diğer stiller burada */
+
+        /* Yorum bölümü */
+        .testimonial-section {
+            display: none; /* Başlangıçta gizli olacak */
+            padding: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        .testimonial {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #222;
+            text-align: center;
+            padding: 10px 0;
+            color: white;
+            margin-top: 20px; /* Beyaz şeridi kaldırmak için ekledik */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Araba Yorumları Web Sitesi</h1>
+        <button id="home-button">Ana Sayfa</button>
+    </header>
+    <main>
+        <section class="search-section">
+            <div class="search-form">
+                <h2>Araba Yorumlarını Sorgula</h2>
+                <input type="text" id="car-input" placeholder="Araba Markası Girin...">
+                <button id="search-button">Sorgula</button>
+            </div>
+        </section>
+        <section class="result-section" id="result-section">
+            <!-- Sorgu sonuçları burada gösterilecek -->
+        </section>
+        <section class="testimonial-section" id="testimonial-section">
+            <h2>Müşteri Yorumları</h2>
+            <div class="testimonials-container" id="testimonials-container">
+                <!-- Yorumlar burada gösterilecek -->
+            </div>
+        </section>
+    </main>
+    <footer>
+        Telif Hakkı © 2023 Araba Yorumları Web Sitesi
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const searchButton = document.getElementById("search-button");
+            const resultSection = document.getElementById("result-section");
+            const testimonialSection = document.getElementById("testimonial-section");
+            const carInput = document.getElementById("car-input");
+            const homeButton = document.getElementById("home-button"); // Ana Sayfa butonu
+            const testimonialsContainer = document.getElementById("testimonials-container");
+
+            // Ana Sayfa butonuna tıklandığında
+            homeButton.addEventListener("click", function() {
+                clearResults(); // Ürün arama sonuçlarını temizle
+                clearTestimonials(); // Yorumları temizle
+                location.reload(); // Sayfayı yeniden yükle
+            });
+
+            searchButton.addEventListener("click", function() {
+                const enteredCar = carInput.value.trim();
+
+                // Araba sorgusu için API isteği yapabilirsiniz veya burada elinizdeki veriyi kullanabilirsiniz
+                // Bu örnek için sabit bir veri kullanıyoruz
+                const carData = [
+                    {
+                        name: "Mercedes",
+                        testimonials: [
+                            { comment: "Harika bir araç, performansı mükemmel!", author: "Ali K" },
+                            { comment: "Konforlu bir sürüş deneyimi sunuyor.", author: "Ayşe D" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Volvo",
+                        testimonials: [
+                            { comment: "Güvenliğiyle ön planda bir araç.", author: "Mehmet Y" },
+                            { comment: "Ailem için ideal bir tercih oldu.", author: "Zeynep A" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Audi",
+                        testimonials: [
+                            { comment: "Tasarımı ve teknolojisi ile etkileyici.", author: "Can T" },
+                            { comment: "Ses sistemi muhteşem!", author: "Ece K" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "BMW",
+                        testimonials: [
+                            { comment: "Lüks ve sportif bir araç.", author: "Eren S" },
+                            { comment: "Sürüş keyfi harika!", author: "Selin A" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Toyota",
+                        testimonials: [
+                            { comment: "Ekonomik ve dayanıklı bir araç.", author: "Ahmet B" },
+                            { comment: "Uzun yıllar kullanıyorum, memnunum.", author: "Fatma G" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Honda",
+                        testimonials: [
+                            { comment: "Kompakt bir araç olmasına rağmen geniş iç mekan sunuyor.", author: "Deniz M" },
+                            { comment: "Yakıt ekonomisi harika.", author: "Elif B" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Ford",
+                        testimonials: [
+                            { comment: "Güçlü motor seçenekleri sunuyor.", author: "Kadir O" },
+                            { comment: "Yol tutuşu gayet iyi.", author: "Gizem E" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Nissan",
+                        testimonials: [
+                            { comment: "Fiyat performans açısından tatmin edici bir seçenek.", author: "Emre K" },
+                            { comment: "Şehir içi kullanıma uygun.", author: "Seda Y" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Mazda",
+                        testimonials: [
+                            { comment: "Şık tasarımı ve güçlü motoru ile dikkat çekiyor.", author: "Gözde A" },
+                            { comment: "Sürüş zevki veren bir araç.", author: "Onur M" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Tesla",
+                        testimonials: [
+                            { comment: "Elektrikli motorunun hızı etkileyici.", author: "Ali K" },
+                            { comment: "Otomatik sürüş özelliği çok güven verici.", author: "Ayşe D" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Subaru",
+                        testimonials: [
+                            { comment: "Dört tekerlekten çekişi ile off-road performansı harika.", author: "Mehmet Y" },
+                            { comment: "Kış aylarında çok güvenilir bir seçenek.", author: "Zeynep A" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Hyundai",
+                        testimonials: [
+                            { comment: "Fiyat ve özellik dengesi çok iyi.", author: "Ahmet B" },
+                            { comment: "Uzun yolculuklarda rahatlık sunuyor.", author: "Fatma G" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Kia",
+                        testimonials: [
+                            { comment: "Yüksek donanım seviyesi ile dikkat çekiyor.", author: "Eren S" },
+                            { comment: "Yakıt ekonomisi beklentilerimi karşılıyor.", author: "Selin A" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Chevrolet",
+                        testimonials: [
+                            { comment: "Geniş iç mekanı ile ailem için uygun bir tercih.", author: "Can T" },
+                            { comment: "Güçlü motor seçenekleri sunuyor.", author: "Ece K" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Jaguar",
+                        testimonials: [
+                            { comment: "Lüks ve prestijli bir araç.", author: "Deniz M" },
+                            { comment: "Ses sistemi ve iç tasarımı muhteşem.", author: "Elif B" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Lexus",
+                        testimonials: [
+                            { comment: "Üstün kalitesi ve rahat sürüş deneyimi ile öne çıkıyor.", author: "Kadir O" },
+                            { comment: "İleri düzey güvenlik teknolojileri ile donatılmış.", author: "Gizem E" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Peugeot",
+                        testimonials: [
+                            { comment: "Şık tasarımı ve yakıt ekonomisi beni memnun etti.", author: "Emre K" },
+                            { comment: "Şehir içi kullanıma uygun boyutlarda.", author: "Seda Y" }
+                            // Diğer yorumlar...
+                        ]
+                    }
+                    // Yeni arabalar ve yorumları...
+                ];
+
+                // Seçilen arabanın verilerini bul
+                const selectedCarData = carData.find(car => car.name.toLowerCase() === enteredCar.toLowerCase());
+
+                // Sonuçları temizle
+                resultSection.innerHTML = "";
+                testimonialsContainer.innerHTML = "";
+
+                if (selectedCarData) {
+                    // Arabaya ait yorumları ekrana ekleyin
+                    selectedCarData.testimonials.forEach(function(testimonial) {
+                        const testimonialDiv = document.createElement("div");
+                        testimonialDiv.className = "testimonial";
+                        testimonialDiv.innerHTML = `
+                            <p>"${testimonial.comment}"</p>
+                            <p class="testimonial-author">- ${testimonial.author}</p>
+                        `;
+                        testimonialsContainer.appendChild(testimonialDiv);
+                    });
+
+                    testimonialSection.style.display = "block"; // Yorumları göster
+                } else {
+                    // Ürün bulunamadı mesajı ekleyin
+                    resultSection.innerHTML = "<p>Ürün bulunamadı.</p>";
+                    testimonialSection.style.display = "none"; // Yorumları gizle
+                }
+            });
+
+            function clearResults() {
+                resultSection.innerHTML = "";
+            }
+
+            function clearTestimonials() {
+                testimonialsContainer.innerHTML = "";
+            }
+        });
+    </script>
+</body>
+</html>

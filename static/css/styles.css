@@ -1,0 +1,84 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #3498db; /* Mavi */
+    background-image: url('../images/araba.jpg'); /* Arka plan resmi */
+    background-size: cover; /* Resmi ekrana sığdır */
+    background-repeat: no-repeat; /* Tekrar etme */
+    background-attachment: fixed; /* Sabit konum */
+    background-position: center; /* Resmi yatayda ve dikeyde ortala */
+    color: #000000; /* Yazı renkleri - Siyah */
+}
+
+header, footer {
+    background-color: #2980b9; /* Daha Koyu Mavi */
+    text-align: center;
+    padding: 10px 0;
+}
+
+main {
+    padding: 20px;
+}
+
+/* Arama bölümü */
+.search-section {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+#product-input {
+    padding: 8px;
+    width: 30%;
+    color: #000000; /* Arama kutusu metin rengi - Siyah */
+}
+
+#search-button {
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #34495e; /* Koyu Mavi Gri */
+    border: none;
+    cursor: pointer;
+    color: #ffffff; /* "Sorgula" butonunun metin rengi - Beyaz */
+}
+
+/* Sonuç bölümü */
+.result-section {
+    border-top: 1px solid #ccc; /* Gri */
+    padding-top: 20px;
+    color: #000000; /* Arama sonuçlarının metin rengi - Siyah */
+}
+
+/* Cevap kutuları */
+.result-box {
+    background-color: #2980b9; /* Daha Koyu Mavi */
+    border: 1px solid #1b4f72; /* Daha Koyu Mavi */
+    padding: 10px;
+    margin-bottom: 10px;
+    color: #ffffff; /* Yorum kutularının metin rengi - Beyaz */
+}
+/* Diğer stiller buraya gelecek */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #222;
+    color: white;
+}
+
+#home-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#home-button:hover {
+    background-color: #45a049;
+}
+
