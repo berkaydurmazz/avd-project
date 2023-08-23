@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,8 @@
 
         /* Yorum bölümü */
         .testimonial-section {
-            display: none; /* Başlangıçta gizli olacak */
+            display: none;
+            /* Başlangıçta gizli olacak */
             padding: 20px;
             background-color: #f4f4f4;
             text-align: center;
@@ -33,10 +35,12 @@
             text-align: center;
             padding: 10px 0;
             color: white;
-            margin-top: 20px; /* Beyaz şeridi kaldırmak için ekledik */
+            margin-top: 20px;
+            /* Beyaz şeridi kaldırmak için ekledik */
         }
     </style>
 </head>
+
 <body>
     <header>
         <h1>Araba Yorumları Web Sitesi</h1>
@@ -64,7 +68,7 @@
         Telif Hakkı © 2023 Araba Yorumları Web Sitesi
     </footer>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const searchButton = document.getElementById("search-button");
             const resultSection = document.getElementById("result-section");
             const testimonialSection = document.getElementById("testimonial-section");
@@ -73,13 +77,13 @@
             const testimonialsContainer = document.getElementById("testimonials-container");
 
             // Ana Sayfa butonuna tıklandığında
-            homeButton.addEventListener("click", function() {
+            homeButton.addEventListener("click", function () {
                 clearResults(); // Ürün arama sonuçlarını temizle
                 clearTestimonials(); // Yorumları temizle
                 location.reload(); // Sayfayı yeniden yükle
             });
 
-            searchButton.addEventListener("click", function() {
+            searchButton.addEventListener("click", function () {
                 const enteredCar = carInput.value.trim();
 
                 // Araba sorgusu için API isteği yapabilirsiniz veya burada elinizdeki veriyi kullanabilirsiniz
@@ -226,6 +230,14 @@
 
                 // Seçilen arabanın verilerini bul
                 const selectedCarData = carData.find(car => car.name.toLowerCase() === enteredCar.toLowerCase());
+                const getProduct = [];
+                fetch("/getProduct",{
+                    method: "POST",
+                    body: true
+                }).then((resp) => resp.json())
+                .then((data) => { 
+                    getProduct.push({data:resp});
+                }
 
                 // Sonuçları temizle
                 resultSection.innerHTML = "";
@@ -233,7 +245,7 @@
 
                 if (selectedCarData) {
                     // Arabaya ait yorumları ekrana ekleyin
-                    selectedCarData.testimonials.forEach(function(testimonial) {
+                    selectedCarData.testimonials.forEach(function (testimonial) {
                         const testimonialDiv = document.createElement("div");
                         testimonialDiv.className = "testimonial";
                         testimonialDiv.innerHTML = `
@@ -261,4 +273,5 @@
         });
     </script>
 </body>
+
 </html>
