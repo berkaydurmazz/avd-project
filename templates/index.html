@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <title>Araba Yorumları Sorgulama</title>
+    <title>Ürün Yorumları </title>
     <style>
         /* Diğer stiller burada */
 
         /* Yorum bölümü */
-        .testimonial-section {
+        /* .testimonial-section {
             display: none;
-            /* Başlangıçta gizli olacak */
+            /* Başlangıçta gizli olacak 
             padding: 20px;
             background-color: #f4f4f4;
             text-align: center;
@@ -25,7 +25,7 @@
 
         .testimonial-author {
             font-weight: bold;
-        }
+        } */
 
         footer {
             position: fixed;
@@ -40,7 +40,7 @@
         }
          /* Sağ üst köşedeki menü */
          .sidebar {
-            position: fixed;
+            position: absolute;
             top: 20px;
             right: 20px;
             display: flex;
@@ -66,49 +66,126 @@
             background-color: #FFC800;
             transform: scale(1.05);
         }
+        body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5; /* Açık gri arkaplan rengi */
+        color: #444;
+        line-height: 1.6;
+        }
+
+/* Hakkında bölümü stilleri */
+.about-section {
+  padding: 20px;
+  text-align: center;
+  background-color: #3498db; /* Parlak mavi arkaplan rengi */
+  color: #fff;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2); /* Hafif bir gölgelendirme */
+  border-radius: 10px; /* Köşeleri yuvarlatma */
+}
+
+.about-section h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.about-section p {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.about-section .highlight {
+  color: #ffd700;
+  font-weight: bold;
+}
+        
+        /* İmaj overlay stilleri */
+       /* İmaj overlay stilleri */
+.container {
+  position: relative;
+  width: 30%; /* Her bir resmin genişliği */
+  margin: 0 1%; /* Sağ ve sol boşluklar */
+  display: inline-block; /* Yan yana hizalama */
+  vertical-align: top; /* Üst hizalama */
+  border: 5px solid #ddd; /* Çerçeve rengi ve kalınlığı */
+  padding: 10px; /* İç kenar boşluğu */
+  box-sizing: border-box; /* Çerçeve ve boşlukları hesaplamak için kutu modeli */
+  overflow: hidden; /* Taşan içerikleri gizle */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transform ve box-shadow animasyonları */
+  border-radius: 10px; /* Köşeleri yuvarlatma */
+}
+
+.container:hover {
+  transform: scale(1.05); /* Üzerine gelince biraz büyütme */
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); /* Hafif bir gölge */
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease; /* Resme gelince hafif bir büyüme animasyonu */
+}
+
+.container:hover .image {
+  transform: scale(1.1); /* Resme gelince biraz daha büyütme */
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.5s ease;
+  background-color: rgba(255, 165, 0, 0.8); /* Yarı saydam turuncu overlay rengi */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container:hover .overlay {
+  opacity: 1;
+}
+
+.text {
+  color: white;
+  font-size: 20px;
+  text-align: center; /* Metni ortala */
+  padding: 10px; /* Kenar boşluğu ekleme */
+  background-color: rgba(0, 0, 0, 0.7); /* Yarı saydam siyah arkaplan */
+  border-radius: 5px; /* Kenarları yuvarlatma */
+  transition: background-color 0.3s ease;
+}
+
+.container:hover .text {
+  background-color: rgba(0, 0, 0, 0.9); /* Daha koyu bir arkaplan */
+}
+/* Altta yer alan iki fotoğrafın ortalanması */
+.centered-row {
+  text-align: center;
+  display: flex;
+  justify-content: center; /* Yatayda ortala */
+  align-items: center; /* Dikeyde ortala */
+}
+
+.centered-row .container {
+  margin: 0 1%; /* Sağ ve sol boşluklar */
+}
     </style>
 </head>
 
 <body>
     <header>
-        <h1>Araba Yorumları Web Sitesi</h1>
+        <h1>Ürün Yorumları Web Sitesi</h1>
         <button id="home-button">Ana Sayfa</button><br/>
-        <!-- <button class="btn" type="button" id="addProductButton">Add Product Page</button>
-        <button class="btn" type="button" id="getProduct">List Products </button> -->
-
-<!-- <script>
-    // Add a click event listener to the button
-    document.getElementById("addProductButton").addEventListener("click", function() {
-        // Redirect to the 'addProduct' route
-        window.location.href = "/addProduct";
-    });
-
-    document.getElementById("getProduct").addEventListener("click", function() {
-        window.location.href = "/getProduct";
-    });
-</script> -->
-
-    <main>
         <section class="search-section">
-            <div class="search-form">
-                <h2>Araba Yorumlarını Sorgula</h2>
-                <input type="text" id="car-input" placeholder="Araba Markası Girin...">
-                <button id="search-button">Sorgula</button>
-            </div>
             <div class="sidebar">
-    
                 <button id="addProductButton">Ürün Ekle</button>
-                <script>/*
-                    // Add a click event listener to the button
-                    document.getElementById("addProductButton").addEventListener("click", function() {
-                        // Redirect to the 'addProduct' route
-                        window.location.href = "/addProduct";
-                    });
-                
-                    document.getElementById("getProduct").addEventListener("click", function() {
-                        window.location.href = "/getProduct";
-                    });
-                </script>
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         var addProductButton = document.getElementById("addProductButton");
@@ -117,9 +194,6 @@
                         });
                     });
                 </script>
-                   
-                
-                   
                 </body>
                 <button id="list_products_button">Ürünleri Listele</button>
                 <script>
@@ -152,432 +226,71 @@
                 </script>
             </div>
         </section>
-        <section class="result-section" id="result-section">
-            <!-- Sorgu sonuçları burada gösterilecek -->
-        </section>
-        <section class="testimonial-section" id="testimonial-section">
-            <h2>Müşteri Yorumları</h2>
-            <div class="testimonials-container" id="testimonials-container">
-                <!-- Yorumlar burada gösterilecek -->
-            </div>
-        </section>
-    </main>
-    <footer>
-        Telif Hakkı © 2023 Araba Yorumları Web Sitesi
-    </footer>
+    </header>
+    
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const searchButton = document.getElementById("search-button");
-            const resultSection = document.getElementById("result-section");
-            const testimonialSection = document.getElementById("testimonial-section");
-            const carInput = document.getElementById("car-input");
             const homeButton = document.getElementById("home-button"); // Ana Sayfa butonu
-            const testimonialsContainer = document.getElementById("testimonials-container");
 
             // Ana Sayfa butonuna tıklandığında
             homeButton.addEventListener("click", function () {
-                clearResults(); // Ürün arama sonuçlarını temizle
-                clearTestimonials(); // Yorumları temizle
                 location.reload(); // Sayfayı yeniden yükle
             });
 
-            searchButton.addEventListener("click", function () {
-                const enteredCar = carInput.value.trim();
-
-                // Araba sorgusu için API isteği yapabilirsiniz veya burada elinizdeki veriyi kullanabilirsiniz
-                // Bu örnek için sabit bir veri kullanıyoruz
-                const carData = [
-                    {
-                        name: "Mercedes",
-                        testimonials: [
-                            { comment: "Harika bir araç, performansı mükemmel!", author: "Ali K" },
-                            { comment: "Konforlu bir sürüş deneyimi sunuyor.", author: "Ayşe D" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Volvo",
-                        testimonials: [
-                            { comment: "Güvenliğiyle ön planda bir araç.", author: "Mehmet Y" },
-                            { comment: "Ailem için ideal bir tercih oldu.", author: "Zeynep A" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Audi",
-                        testimonials: [
-                            { comment: "Tasarımı ve teknolojisi ile etkileyici.", author: "Can T" },
-                            { comment: "Ses sistemi muhteşem!", author: "Ece K" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "BMW",
-                        testimonials: [
-                            { comment: "Lüks ve sportif bir araç.", author: "Eren S" },
-                            { comment: "Sürüş keyfi harika!", author: "Selin A" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Toyota",
-                        testimonials: [
-                            { comment: "Ekonomik ve dayanıklı bir araç.", author: "Ahmet B" },
-                            { comment: "Uzun yıllar kullanıyorum, memnunum.", author: "Fatma G" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Honda",
-                        testimonials: [
-                            { comment: "Kompakt bir araç olmasına rağmen geniş iç mekan sunuyor.", author: "Deniz M" },
-                            { comment: "Yakıt ekonomisi harika.", author: "Elif B" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Ford",
-                        testimonials: [
-                            { comment: "Güçlü motor seçenekleri sunuyor.", author: "Kadir O" },
-                            { comment: "Yol tutuşu gayet iyi.", author: "Gizem E" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Nissan",
-                        testimonials: [
-                            { comment: "Fiyat performans açısından tatmin edici bir seçenek.", author: "Emre K" },
-                            { comment: "Şehir içi kullanıma uygun.", author: "Seda Y" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Mazda",
-                        testimonials: [
-                            { comment: "Şık tasarımı ve güçlü motoru ile dikkat çekiyor.", author: "Gözde A" },
-                            { comment: "Sürüş zevki veren bir araç.", author: "Onur M" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Tesla",
-                        testimonials: [
-                            { comment: "Elektrikli motorunun hızı etkileyici.", author: "Ali K" },
-                            { comment: "Otomatik sürüş özelliği çok güven verici.", author: "Ayşe D" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Subaru",
-                        testimonials: [
-                            { comment: "Dört tekerlekten çekişi ile off-road performansı harika.", author: "Mehmet Y" },
-                            { comment: "Kış aylarında çok güvenilir bir seçenek.", author: "Zeynep A" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Hyundai",
-                        testimonials: [
-                            { comment: "Fiyat ve özellik dengesi çok iyi.", author: "Ahmet B" },
-                            { comment: "Uzun yolculuklarda rahatlık sunuyor.", author: "Fatma G" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Kia",
-                        testimonials: [
-                            { comment: "Yüksek donanım seviyesi ile dikkat çekiyor.", author: "Eren S" },
-                            { comment: "Yakıt ekonomisi beklentilerimi karşılıyor.", author: "Selin A" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Chevrolet",
-                        testimonials: [
-                            { comment: "Geniş iç mekanı ile ailem için uygun bir tercih.", author: "Can T" },
-                            { comment: "Güçlü motor seçenekleri sunuyor.", author: "Ece K" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Jaguar",
-                        testimonials: [
-                            { comment: "Lüks ve prestijli bir araç.", author: "Deniz M" },
-                            { comment: "Ses sistemi ve iç tasarımı muhteşem.", author: "Elif B" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Lexus",
-                        testimonials: [
-                            { comment: "Üstün kalitesi ve rahat sürüş deneyimi ile öne çıkıyor.", author: "Kadir O" },
-                            { comment: "İleri düzey güvenlik teknolojileri ile donatılmış.", author: "Gizem E" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Peugeot",
-                        testimonials: [
-                            { comment: "Şık tasarımı ve yakıt ekonomisi beni memnun etti.", author: "Emre K" },
-                            { comment: "Şehir içi kullanıma uygun boyutlarda.", author: "Seda Y" }
-                            // Diğer yorumlar...
-                        ]
-                    }
-                    // Yeni arabalar ve yorumları...
-                ];
-
-                // Seçilen arabanın verilerini bul
-                const selectedCarData = carData.find(car => car.name.toLowerCase() === enteredCar.toLowerCase());
-                const getProduct = [];
-                fetch("/getProduct",{
-                    method: "POST",
-                    body: true
-                }).then((resp) => resp.json())  
-                .then((data) => { 
-                getProduct.push({data:resp});
-                })
-                // Sonuçları temizle
-                resultSection.innerHTML = "";
-                testimonialsContainer.innerHTML = "";
-
-                if (selectedCarData) {
-                    // Arabaya ait yorumları ekrana ekleyin
-                    selectedCarData.testimonials.forEach(function (testimonial) {
-                        const testimonialDiv = document.createElement("div");
-                        testimonialDiv.className = "testimonial";
-                        testimonialDiv.innerHTML = `
-                            <p>"${testimonial.comment}"</p>
-                            <p class="testimonial-author">- ${testimonial.author}</p>
-                        `;
-                        testimonialsContainer.appendChild(testimonialDiv);
-                    });
-
-                    testimonialSection.style.display = "block"; // Yorumları göster
-                } else {
-                    // Ürün bulunamadı mesajı ekleyin
-                    resultSection.innerHTML = "<p>Ürün bulunamadı.</p>";
-                    testimonialSection.style.display = "none"; // Yorumları gizle
-                }
-            });
-
-            function clearResults() {
-                resultSection.innerHTML = "";
-            }
-
-            function clearTestimonials() {
-                testimonialsContainer.innerHTML = "";
-            }
+            
         });
         
     </script>
-    <script>
-      /*  document.addEventListener("DOMContentLoaded", function () {
-            const searchButton = document.getElementById("search-button");
-            const resultSection = document.getElementById("result-section");
-            const testimonialSection = document.getElementById("testimonial-section");
-            const carInput = document.getElementById("car-input");
-            const homeButton = document.getElementById("home-button"); // Ana Sayfa butonu
-            const testimonialsContainer = document.getElementById("testimonials-container");
-
-            // Ana Sayfa butonuna tıklandığında
-            homeButton.addEventListener("click", function () {
-                clearResults(); // Ürün arama sonuçlarını temizle
-                clearTestimonials(); // Yorumları temizle
-                location.reload(); // Sayfayı yeniden yükle
-            });
-
-            searchButton.addEventListener("click", function () {
-                const enteredCar = carInput.value.trim();
-
-                // Araba sorgusu için API isteği yapabilirsiniz veya burada elinizdeki veriyi kullanabilirsiniz
-                // Bu örnek için sabit bir veri kullanıyoruz
-                const carData = [
-                    {
-                        name: "Mercedes",
-                        testimonials: [
-                            { comment: "Harika bir araç, performansı mükemmel!", author: "Ali K" },
-                            { comment: "Konforlu bir sürüş deneyimi sunuyor.", author: "Ayşe D" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Volvo",
-                        testimonials: [
-                            { comment: "Güvenliğiyle ön planda bir araç.", author: "Mehmet Y" },
-                            { comment: "Ailem için ideal bir tercih oldu.", author: "Zeynep A" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Audi",
-                        testimonials: [
-                            { comment: "Tasarımı ve teknolojisi ile etkileyici.", author: "Can T" },
-                            { comment: "Ses sistemi muhteşem!", author: "Ece K" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "BMW",
-                        testimonials: [
-                            { comment: "Lüks ve sportif bir araç.", author: "Eren S" },
-                            { comment: "Sürüş keyfi harika!", author: "Selin A" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Toyota",
-                        testimonials: [
-                            { comment: "Ekonomik ve dayanıklı bir araç.", author: "Ahmet B" },
-                            { comment: "Uzun yıllar kullanıyorum, memnunum.", author: "Fatma G" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Honda",
-                        testimonials: [
-                            { comment: "Kompakt bir araç olmasına rağmen geniş iç mekan sunuyor.", author: "Deniz M" },
-                            { comment: "Yakıt ekonomisi harika.", author: "Elif B" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Ford",
-                        testimonials: [
-                            { comment: "Güçlü motor seçenekleri sunuyor.", author: "Kadir O" },
-                            { comment: "Yol tutuşu gayet iyi.", author: "Gizem E" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Nissan",
-                        testimonials: [
-                            { comment: "Fiyat performans açısından tatmin edici bir seçenek.", author: "Emre K" },
-                            { comment: "Şehir içi kullanıma uygun.", author: "Seda Y" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Mazda",
-                        testimonials: [
-                            { comment: "Şık tasarımı ve güçlü motoru ile dikkat çekiyor.", author: "Gözde A" },
-                            { comment: "Sürüş zevki veren bir araç.", author: "Onur M" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Tesla",
-                        testimonials: [
-                            { comment: "Elektrikli motorunun hızı etkileyici.", author: "Ali K" },
-                            { comment: "Otomatik sürüş özelliği çok güven verici.", author: "Ayşe D" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Subaru",
-                        testimonials: [
-                            { comment: "Dört tekerlekten çekişi ile off-road performansı harika.", author: "Mehmet Y" },
-                            { comment: "Kış aylarında çok güvenilir bir seçenek.", author: "Zeynep A" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Hyundai",
-                        testimonials: [
-                            { comment: "Fiyat ve özellik dengesi çok iyi.", author: "Ahmet B" },
-                            { comment: "Uzun yolculuklarda rahatlık sunuyor.", author: "Fatma G" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Kia",
-                        testimonials: [
-                            { comment: "Yüksek donanım seviyesi ile dikkat çekiyor.", author: "Eren S" },
-                            { comment: "Yakıt ekonomisi beklentilerimi karşılıyor.", author: "Selin A" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Chevrolet",
-                        testimonials: [
-                            { comment: "Geniş iç mekanı ile ailem için uygun bir tercih.", author: "Can T" },
-                            { comment: "Güçlü motor seçenekleri sunuyor.", author: "Ece K" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Jaguar",
-                        testimonials: [
-                            { comment: "Lüks ve prestijli bir araç.", author: "Deniz M" },
-                            { comment: "Ses sistemi ve iç tasarımı muhteşem.", author: "Elif B" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Lexus",
-                        testimonials: [
-                            { comment: "Üstün kalitesi ve rahat sürüş deneyimi ile öne çıkıyor.", author: "Kadir O" },
-                            { comment: "İleri düzey güvenlik teknolojileri ile donatılmış.", author: "Gizem E" }
-                            // Diğer yorumlar...
-                        ]
-                    },
-                    {
-                        name: "Peugeot",
-                        testimonials: [
-                            { comment: "Şık tasarımı ve yakıt ekonomisi beni memnun etti.", author: "Emre K" },
-                            { comment: "Şehir içi kullanıma uygun boyutlarda.", author: "Seda Y" }
-                            // Diğer yorumlar...
-                        ]
-                    }
-                    // Yeni arabalar ve yorumları...
-                ];
-
-                // Seçilen arabanın verilerini bul
-                const selectedCarData = carData.find(car => car.name.toLowerCase() === enteredCar.toLowerCase());
-                const getProduct = [];
-                fetch("/getProduct",{
-                    method: "POST",
-                    body: true
-                }).then((resp) => resp.json())
-                .then((data) => { 
-                    getProduct.push({data:resp});
-                })
-                .catch((error) => {
-                     console.error("Error:", error);
-                });
-
-                // Sonuçları temizle
-                resultSection.innerHTML = "";
-                testimonialsContainer.innerHTML = "";
-
-                if (selectedCarData) {
-                    // Arabaya ait yorumları ekrana ekleyin
-                    selectedCarData.testimonials.forEach(function (testimonial) {
-                        const testimonialDiv = document.createElement("div");
-                        testimonialDiv.className = "testimonial";
-                        testimonialDiv.innerHTML = `
-                            <p>"${testimonial.comment}"</p>
-                            <p class="testimonial-author">- ${testimonial.author}</p>
-                        `;
-                        testimonialsContainer.appendChild(testimonialDiv);
-                    });
-
-                    testimonialSection.style.display = "block"; // Yorumları göster
-                } else {
-                    // Ürün bulunamadı mesajı ekleyin
-                    resultSection.innerHTML = "<p>Ürün bulunamadı.</p>";
-                    testimonialSection.style.display = "none"; // Yorumları gizle
-                }
-            });
-
-            function clearResults() {
-                resultSection.innerHTML = "";
-            }
-
-            function clearTestimonials() {
-                testimonialsContainer.innerHTML = "";
-            }
-        });*/
-    </script>
+    <div class="about-section">
+        <h2>Hakkımızda</h2>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic, deserunt natus, explicabo facilis ad autem maiores ea officia numquam reprehenderit commodi nam dolor in velit architecto magni obcaecati. Praesentium, fugiat?
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae suscipit in praesentium doloribus, non, quo modi voluptate adipisci quasi repellat possimus obcaecati voluptates magni, cupiditate aut vitae porro. Illo, minus?
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi, tenetur minus! Vel tempore voluptates placeat corrupti illum nam iure at vero officia facilis? Iste blanditiis accusamus dicta cum iure! Repellat.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempora, adipisci explicabo tempore doloribus soluta. Libero et, voluptatibus vel nisi at velit iusto molestiae qui sapiente, ea, distinctio exercitationem? Maxime!
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi obcaecati error distinctio dignissimos aut voluptate nulla et ea autem nisi molestiae similique natus quidem numquam, consectetur illum, sunt velit quae!
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Placeat ipsum quo excepturi voluptates nihil exercitationem aliquid molestiae provident unde laudantium nesciunt nobis, et ex facilis accusamus vero molestias ea obcaecati!
+      </div>
+      
+      <h2>Kişiler Hakkında</h2>
+      
+      <!-- İmaj overlay konteynırları -->
+      <div class="container">
+        <img src="/static/images/mert.jpg" alt="Avatar" class="image">
+        <div class="overlay">
+          <div class="text">Taha Mert Cebecik</div>
+        </div>
+      </div>
+      <div class="container">
+        <img src="/static/images/berkay.jpg" alt="Avatar" class="image">
+        <div class="overlay">
+          <div class="text">Berkay Durmaz</div>
+        </div>
+      </div>
+      <div class="container">
+        <img src="/static/images/ruveyda.jpg" alt="Avatar" class="image">
+        <div class="overlay">
+          <div class="text">Rüveyda Yıldırım</div>
+        </div>
+      </div>
+      
+      <!-- Altta yer alan iki fotoğrafın ortalanması -->
+      <div class="centered-row">
+        <div class="container">
+          <img src="/static/images/sar.jpeg" alt="Avatar" class="image">
+          <div class="overlay">
+            <div class="text">Ata Sarp Görener</div>
+          </div>
+        </div>
+        <div class="container">
+          <img src="/static/images/ens.jpeg" alt="Avatar" class="image">
+          <div class="overlay">
+            <div class="text">Mustafa Enes Öztürk</div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        Telif Hakkı © 2023 Ürün Yorumları Web Sitesi
+    </footer>
 </body>
-
 </html>

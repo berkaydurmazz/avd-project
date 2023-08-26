@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">   
     <title>Müşteri Ekle</title>
     
     <style>
@@ -22,17 +23,168 @@
         .customer-table th {
             background-color: #f2f2f2;
         }
-
-        /* Daha fazla stil özelleştirmesi yapabilirsiniz */
+        /* Sağ üst köşedeki menü */
+        .sidebar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+        }
+    
+        .sidebar button {
+            background-color: #FFD700;
+            border: none;
+            color: #333;
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 3px;
+            margin-left: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    
+        .sidebar button:hover {
+            background-color: #FFC800;
+            transform: scale(1.05);
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #222;
+            text-align: center;
+            padding: 10px 0;
+            color: white;
+            margin-top: 20px;
+            /* Beyaz şeridi kaldırmak için ekledik */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="number"] {
+            width: 20%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        button[type="submit"] {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #2980b9;
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Müşteri Ekle</h1>
-        <button id="home-button">Ana Sayfa</button>
+        <h1>Ürün Yorumları Web Sitesi</h1>
+        <button id="home-button">Ana Sayfa</button><br/>
+        <section class="search-section">
+            <div class="sidebar">
+                <button id="addProductButton">Ürün Ekle</button>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var addProductButton = document.getElementById("addProductButton");
+                        addProductButton.addEventListener("click", function () {
+                            window.location.href = "/addProduct";
+                        });
+                    });
+                </script>
+                </body>
+                <button id="list_products_button">Ürünleri Listele</button>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var listProductsButton = document.getElementById("list_products_button");
+                        listProductsButton.addEventListener("click", function () {
+                            window.location.href = "/getProduct";
+                        });
+                    });
+                </script>
+                 <button id="add_customer_button">Müşteri Ekle</button>
+                 <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var addCustomerButton = document.getElementById("add_customer_button");
+                        addCustomerButton.addEventListener("click", function () {
+                            window.location.href = "/addCustomer";
+                           // window.location.href = "musteriekle.html";
+                        });
+                    });
+                </script>
+               <button id="list_customers_button">Müşteri Listele</button>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var listCustomersButton = document.getElementById("list_customers_button");
+                        listCustomersButton.addEventListener("click", function () {
+                            window.location.href = "/getCustomer";
+                           // window.location.href = "musterilistele.html";
+                        });
+                    });
+                </script>
+            </div>
+        </section>
+        <section class="result-section" id="result-section">
+            <!-- Sorgu sonuçları burada gösterilecek -->
+        </section>
+        <section class="testimonial-section" id="testimonial-section">
+          <!--  <h2>Müşteri Yorumları</h2>-->
+            <div class="testimonials-container" id="testimonials-container">
+                <!-- Yorumlar burada gösterilecek -->
+            </div>
+        </section>
     </header>
     <footer>
-        Telif Hakkı © 2023 Araba Yorumları Web Sitesi
+        Telif Hakkı © 2023 Ürün Yorumları Web Sitesi
     </footer>
     <!-- Müşteri ekleme formu -->
     <form action="/addCustomer" method="post">
@@ -42,7 +194,7 @@
         <input type="email" id="customerEmail" name="customerEmail" required><br>
         <label for="budget">Bütçe:</label>
         <input type="number" id="budget"  name="budget" required><br>
-        <button type="submit">Ekle</button>
+        <button type="submit" >Ekle</button>
     </form>
     <script> 
         fetch("/addCustomer",{
@@ -53,6 +205,18 @@
                  getCustomer.push({data:resp});
                     });
     </script>
-    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const homeButton = document.getElementById("home-button"); // Ana Sayfa butonu
+
+            // Ana Sayfa butonuna tıklandığında
+            homeButton.addEventListener("click", function () {
+                window.location.href = '/';
+            });
+
+            
+        });
+        
+    </script>
 </body>
 </html>

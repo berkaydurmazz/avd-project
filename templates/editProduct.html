@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <title>Search for a Comment</title>
+    <title>Edit the Product</title>
     <style>
         /* Diğer stiller burada */
 
@@ -37,58 +37,138 @@
             margin-top: 20px;
             /* Beyaz şeridi kaldırmak için ekledik */
         }
+        /* Sağ üst köşedeki menü */
+        .sidebar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+        }
+    
+        .sidebar button {
+            background-color: #FFD700;
+            border: none;
+            color: #333;
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 3px;
+            margin-left: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    
+        .sidebar button:hover {
+            background-color: #FFC800;
+            transform: scale(1.05);
+        }   
     </style>
 </head>
 <body>
     <header>
-        <h1>Araba Yorumları Web Sitesi</h1>
-        <button id="home-button">Ana Sayfa</button>
-    </header><section></section>
+        <h1>Ürün Yorumları Web Sitesi</h1>
+        <button id="home-button">Ana Sayfa</button><br/>
+        <section class="search-section">
+            <div class="sidebar">
+                <button id="addProductButton">Ürün Ekle</button>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var addProductButton = document.getElementById("addProductButton");
+                        addProductButton.addEventListener("click", function () {
+                            window.location.href = "/addProduct";
+                        });
+                    });
+                </script>
+                </body>
+                <button id="list_products_button">Ürünleri Listele</button>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var listProductsButton = document.getElementById("list_products_button");
+                        listProductsButton.addEventListener("click", function () {
+                            window.location.href = "/getProduct";
+                        });
+                    });
+                </script>
+                 <button id="add_customer_button">Müşteri Ekle</button>
+                 <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var addCustomerButton = document.getElementById("add_customer_button");
+                        addCustomerButton.addEventListener("click", function () {
+                            window.location.href = "/addCustomer";
+                        });
+                    });
+                </script>
+               <button id="list_customers_button">Müşteri Listele</button>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var listCustomersButton = document.getElementById("list_customers_button");
+                        listCustomersButton.addEventListener("click", function () {
+                            window.location.href = "/getCustomer";
+                        });
+                    });
+                </script>
+            </div>
+        </section>
+        <section class="result-section" id="result-section">
+            <!-- Sorgu sonuçları burada gösterilecek -->
+        </section>
+        <section class="testimonial-section" id="testimonial-section">
+            <h2>Müşteri Yorumları</h2>
+            <div class="testimonials-container" id="testimonials-container">
+                <!-- Yorumlar burada gösterilecek -->
+            </div>
+        </section>
+    </header>
     <footer>
         Telif Hakkı © 2023 Araba Yorumları Web Sitesi
     </footer>
     <h2>Ürün Güncelleme Formu</h2>
     
-    <form action="/updateProduct" method="POST">
+    <form action="/updateProduct/{{ product[0] }}"    method="POST">
         <label for="productName">Product Name:</label><br>
-        <input type="text" id="productName" name="productName" required value="{{ product[1] }}"><br><br>
+        <input type="text" id="productName" name="productName" required value="{{ product[0] }}" readonly><br><br>
         
         <label for="productURL">Product URL:</label><br>
         <input type="text" id="productURL" name="productURL" required value="{{ product[2] }}"><br><br>
         
         <label for="productPrice">Product Price:</label><br>
-        <input type="number" id="productPrice" name="productPrice" required value="{{ product[3] }}"><br><br>
+        <input type="number" id="productPrice" name="productPrice" required value="{{ product[1] }}"><br><br>
         
         <br><br>
         
         <input type="submit" value="Güncelle">
     </form>
-    <script>
-        document.querySelector('form').addEventListener('submit', function (event) {
-            event.preventDefault(); // Formun varsayılan davranışını engelle
-    
-            // Kullanıcıya onay mesajı göster
-            var productName = document.getElementById('productName').value;
-            var productPrice = document.getElementById('productPrice').value;
-            var confirmationMessage = 'Ürün adı: ' + productName + '\nÜrün fiyatı: ' + productPrice + '\nGüncellensin mi?';
-    
-            if (confirm(confirmationMessage)) {
-                // Onaylandığında formu gönder
-                this.submit();
-            } else {
-                // İptal edildiğinde bir şey yapma
-            }
-        });
-    </script>
-    
     <script> 
-        fetch("/updateProduct",{
-                 method: "POST",
-                 body: true
-                 }).then((resp) => resp.json())
-                .then((data) => { 
-                 getProduct.push({data:resp});
-                    });
+    const url = "/updateProduct/" + productName;
+    fetch(url, {
+        method: "POST"
+    })
+    .then((resp) => resp.json())
+    .then((data) => {
+        // Handle the response data here
+        getProduct.push({ data: data });
+    })
+    .catch((error) => {
+        // Handle any errors that occur during the fetch or JSON parsing
+        console.error("Error:", error);
+    });
+    
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const homeButton = document.getElementById("home-button"); // Ana Sayfa butonu
+
+            // Ana Sayfa butonuna tıklandığında
+            homeButton.addEventListener("click", function () {
+                window.location.href = '/';
+            });
+
+            
+        });
+        
     </script>
 </body>
 </html>
