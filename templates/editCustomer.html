@@ -4,9 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <title>Ürün Ekleme Sayfası</title>
+    <title>Edit the Customer</title>
     <style>
-        
+        /* Diğer stiller burada */
+
+        /* Yorum bölümü */
+        .testimonial-section {
+            display: none;
+            /* Başlangıçta gizli olacak */
+            padding: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        .testimonial {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+        }
+
         footer {
             position: fixed;
             bottom: 0;
@@ -45,69 +64,7 @@
         .sidebar button:hover {
             background-color: #FFC800;
             transform: scale(1.05);
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        form {
-            background-color: #fff;
-            border-radius: 5px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin: auto;
-            text-align: center;
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="text"],
-        input[type="number"] {
-            text-align: center;
-            width: 20%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            font-size: 14px;
-        }
-        input[type="submit"] {
-            background-color: #3498db;
-            color: #fff;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        input[type="submit"]:hover {
-            background-color: #2980b9;
-        }
-        a {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            color: #3498db;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        a:hover {
-            color: #2980b9;
-        }
+        }   
     </style>
 </head>
 <body>
@@ -141,7 +98,6 @@
                         var addCustomerButton = document.getElementById("add_customer_button");
                         addCustomerButton.addEventListener("click", function () {
                             window.location.href = "/addCustomer";
-                           // window.location.href = "musteriekle.html";
                         });
                     });
                 </script>
@@ -151,40 +107,57 @@
                         var listCustomersButton = document.getElementById("list_customers_button");
                         listCustomersButton.addEventListener("click", function () {
                             window.location.href = "/getCustomer";
-                           // window.location.href = "musterilistele.html";
                         });
                     });
                 </script>
             </div>
         </section>
-        
+        <section class="result-section" id="result-section">
+            <!-- Sorgu sonuçları burada gösterilecek -->
+        </section>
+        <section class="testimonial-section" id="testimonial-section">
+            <h2>Müşteri Yorumları</h2>
+            <div class="testimonials-container" id="testimonials-container">
+                <!-- Yorumlar burada gösterilecek -->
+            </div>
+        </section>
     </header>
     <footer>
-        Telif Hakkı © 2023 Ürün Yorumları Web Sitesi
+        Telif Hakkı © 2023 Araba Yorumları Web Sitesi
     </footer>
-    <h2>Ürün Ekleme Formu</h2>
-    <form action="/addProduct" method="post">
-        <label for="productName">Product Name:</label><br>
-        <input type="text" id="productName" name="productName" required><br><br>
+    <h2>Müşteri Güncelleme Formu</h2>
+    
+    <form action="/updateCustomer/{{ customer[0] }}"    method="POST">
+        <label for="customerName">Customer Name:</label><br>
+        <input type="text" id="customerName" name="customerName" required value="{{ customer[0] }}" readonly><br><br>
         
-        <label for="productURL">productURL :</label><br>
-        <input type="text" id="productURL" name="productURL" required><br><br>
+        <label for="customerEmail">customerEmail:</label><br>
+        <input type="text" id="customerEmail" name="customerEmail" required value="{{ customer[2] }}"><br><br>
         
-        <label for="productPrice">Product Price:</label><br>
-        <input type="number" id="productPrice" name="productPrice" required><br><br>
+        <label for="budget">budget:</label><br>
+        <input type="number" id="budget" name="budget" required value="{{ customer[1] }}"><br><br>
         
         <br><br>
         
-        <input type="submit" value="Ürün Ekle">
+        <input type="submit" value="Güncelle">
     </form>
     <script> 
-        fetch("/addProduct",{
-                 method: "POST",
-                 body: true
-                 }).then((resp) => resp.json())
-                .then((data) => { 
-                 getProduct.push({data:resp});
-                    });
+    const url = "/updateCustomer/" + customerName;
+    fetch(url, {
+        method: "POST"
+    })
+    .then((resp) => resp.json())
+    .then((data) => {
+        // Handle the response data here
+        getCustomer.push({ data: data });
+        
+    })
+    .catch((error) => {
+        // Handle any errors that occur during the fetch or JSON parsing
+        console.error("Error:", error);
+        //alert("Müşteri güncelleme işleminde bir sorun oluştu: " + customerName);
+    });
+    
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {

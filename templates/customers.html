@@ -1,17 +1,159 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Flask and SQLite </title>
+		<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+   	 	<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    	<title>Ürün Yorumları </title>
 	</head>
 	<style>
 		table, th, td {
 		border:1px solid black;
 		}
+
+		.testimonial-section {
+            display: none;
+            /* Başlangıçta gizli olacak */
+            padding: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        .testimonial {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #222;
+            text-align: center;
+            padding: 10px 0;
+            color: white;
+            margin-top: 20px;
+            /* Beyaz şeridi kaldırmak için ekledik */
+        }
+         /* Sağ üst köşedeki menü */
+         .sidebar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+        }
+    
+        .sidebar button {
+            background-color: #FFD700;
+            border: none;
+            color: #333;
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 3px;
+            margin-left: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    
+        .sidebar button:hover {
+            background-color: #FFC800;
+            transform: scale(1.05);
+        }
+		/* Tablo stilleri */
+        .customer-table {
+        width: 100%;
+        max-width: 800px; /* Tablonun en fazla genişliği */
+        margin: 20px auto;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .customer-table th,
+    .customer-table td {
+        padding: 8px; /* Hücre içi boşlukları azalt */
+        border: 1px solid #ccc;
+    }
+        
+        .customer-table th {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+        }
+        
+        .customer-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
 		</style>
 	<body>
-		
+		<footer>
+			Telif Hakkı © 2023 Ürün Yorumları Web Sitesi
+		</footer>
+		<header>
+			<h1>Ürün Yorumları Web Sitesi</h1>
+			<button id="home-button">Ana Sayfa</button><br/>
+			<section class="search-section">
+				<div class="sidebar">
+					<button id="addProductButton">Ürün Ekle</button>
+					<script>
+						document.addEventListener("DOMContentLoaded", function () {
+							var addProductButton = document.getElementById("addProductButton");
+							addProductButton.addEventListener("click", function () {
+								window.location.href = "/addProduct";
+							});
+						});
+					</script>
+					</body>
+					<button id="list_products_button">Ürünleri Listele</button>
+					<script>
+						document.addEventListener("DOMContentLoaded", function () {
+							var listProductsButton = document.getElementById("list_products_button");
+							listProductsButton.addEventListener("click", function () {
+								window.location.href = "/getProduct";
+							});
+						});
+					</script>
+					 <button id="add_customer_button">Müşteri Ekle</button>
+					 <script>
+						document.addEventListener("DOMContentLoaded", function () {
+							var addCustomerButton = document.getElementById("add_customer_button");
+							addCustomerButton.addEventListener("click", function () {
+								window.location.href = "/addCustomer";
+							   // window.location.href = "musteriekle.html";
+							});
+						});
+					</script>
+				   <button id="list_customers_button">Müşteri Listele</button>
+					<script>
+						document.addEventListener("DOMContentLoaded", function () {
+							var listCustomersButton = document.getElementById("list_customers_button");
+							listCustomersButton.addEventListener("click", function () {
+								window.location.href = "/getCustomer";
+							   // window.location.href = "musterilistele.html";
+							});
+						});
+					</script>
+				</div>
+			</section>
+			<section class="result-section" id="result-section">
+				<!-- Sorgu sonuçları burada gösterilecek -->
+			</section>
+			<section class="testimonial-section" id="testimonial-section">
+				<!-- <h2>Müşteri Yorumları</h2> -->
+				<div class="testimonials-container" id="testimonials-container">
+					<!-- Yorumlar burada gösterilecek -->
+				</div>
+			</section>
+		</header>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-		<table style="width:100%">
+		<table class="customer-table"style="width:100%">
 			<tr>
 			<th>customerName</th>
 			<th>Budget</th>
@@ -31,6 +173,19 @@
 			{%endfor%}
 		</table>
 		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+				const homeButton = document.getElementById("home-button"); // Ana Sayfa butonu
+	
+				// Ana Sayfa butonuna tıklandığında
+				homeButton.addEventListener("click", function () {
+					window.location.href = '/';
+				});
+	
+				
+			});
+			
+		</script>
+		<script>
 			$(document).ready(function() {
 				// Sayfa yüklendiğinde butonları dinamik olarak etkinleştirin
 				$(".deleteButton").click(function() {
@@ -42,44 +197,21 @@
 						url: "/deleteCustomer/" + productName, // Sunucu tarafında bu URL'yi işlemeniz gerekiyor
 						success: function(data) {
 							productRow.remove(); // Başarılı ise satırı kaldır
-							alert("Ürün silme işlemi başarılı: " + productName);
+							alert("Müşteri silme işlemi başarılı: " + productName);
 						},
 						error: function(error) {
-							console.log("Hata:", error); alert("Ürün silme işlemi sıkıntılı: " + productName);
+							console.log("Hata:", error); alert("Müşteri silme işlemi sıkıntılı: " + productName);
 						}
 					});
 				});
+				$(".updateButton").click(function() {
+					var customerRow = $(this).closest("tr"); // Tıklanan düğmenin bulunduğu satırı alın
+					var customerName = customerRow.find("td:first").text(); // İlgili satırın ilk hücresindeki metni alın
+                    window.location.href = "/updateCustomer/"  + customerName
+				});
 			});
+			
 		</script>	
-		<script>
-			// Delete düğmesine tıklandığında çağrılacak işlev
-			function deleteRow(button) {
-				var row = button.parentNode.parentNode; // Düğme ile ilişkilendirilmiş satırı al
-				var productId = row.cells[0].textContent; // İlgili satırın ilk hücresinden ürün ID'sini alabilirsiniz
-		
-				// Kullanıcıdan silme işlemini onaylamasını isteyebilirsiniz
-				var confirmation = confirm("Bu kullanıcıyı silmek istediğinizden emin misiniz?");
-		
-				if (confirmation) {
-					// Silme işlemini gerçekleştirmek için AJAX veya bir form gönderebilirsiniz
-					// Örnek olarak, bu kod sadece bir uyarı gösterir
-					alert("Ürün silme işlemi başarılı: " + productId);
-		
-					// Eğer silme işlemini yapmak isterseniz, AJAX kullanarak sunucuya göndermelisiniz
-					// Örnek AJAX kodu:
-					 $.ajax({
-					     type: "POST",
-					     url: "/deleteCustomer/" + productId,
-					     success: function(data) {
-							alert("Ürün başarıyla silindi.");
-					     },
-					     error: function(error) {
-							alert("Ürün silinirken bir hata oluştu: " + error.statusText);
-					    }
-					 });
-				}
-			}
-		</script>
 		<style>
 			button#updateButton {
 				padding: 10px 20px;

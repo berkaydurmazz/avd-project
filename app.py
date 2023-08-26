@@ -47,6 +47,9 @@ def sendMail(message, name, email):
     except Exception as e:
         print(e)
 
+@app.route('/comments')
+def comments():
+    return render_template('comments.html')
 
 @app.route('/')
 def hello():
@@ -121,49 +124,40 @@ def get_product_info(productName):
             if product:
                 return product
             else:
-                return None
+                return False
     except Exception as e:
         print(e)
-        return None
+        return False
 @app.route('/updateProduct/<productName>', methods=['POST','GET'])
 def updateProduct(productName):
-    """ if request.method == 'GET':
-        productName = request.args.get('productName')
+     if request.method == 'GET':
+        #productName = request.args.get('productName')
+        print(productName)
         product = get_product_info(productName)
+        print(product)
         if product:
             return render_template('editProduct.html', product=product)
         else:
             return "Ürün bulunamadı."
     
-    el """
-    if request.method == 'POST':
+     elif request.method == 'POST':
         productName = request.form['productName']
+        print(productName)
         productPrice = request.form['productPrice']
+        print(productPrice)
         productURL=request.form['productURL']
+        print(productURL)
         try:
             with sqlite3.connect(db) as conn:
                 cursor = conn.cursor()
                 cursor.execute(
-                    "UPDATE product SET productPrice = ? WHERE productName = ?", (productPrice, productName,productURL))
+                    "UPDATE product SET productName = ?, productPrice = ?, productURL = ? WHERE productName = ?", (productName, productPrice, productURL, productName))
                 conn.commit()
-                return "Ürün güncellendi."
+                return render_template("index.html")
         except Exception as e:
             print(e)
             return "Ürün güncelleme hatası." 
         
-#Düzenleme gerekli
-""" @app.route('/updateProduct')
-def updateProduct(productPrice, productName):
-    try:
-        with sqlite3.connect(db) as conn:
-            cursor = conn.cursor()
-            cursor.execute(
-                "UPDATE product SET productPrice = (?) WHERE productName = (?)", (productPrice, productName))
-            conn.commit()
-            return True
-    except Exception as e:
-        print(e)
-        return False """
 
 #Düzenleme gerekli
 @app.route('/deleteProduct/<productName>', methods=['POST'])
@@ -219,20 +213,44 @@ def addCustomer():
     else:
         return render_template('addCustomer.html')
 
-@app.route('/updateCustomer')
-def updateCustomer(budget, customerName, customerEmail):
+@app.route('/get-customer-info')
+def get_customer_info(customerName):
     try:
         with sqlite3.connect(db) as conn:
             cursor = conn.cursor()
-            cursor.execute(
-                "UPDATE customer SET budget = (?) WHERE customerName = (?)", (budget, customerName))
-            conn.commit()
-            conn.close()
-            sendMail("Budget Updated", customerName, customerEmail)
-            return True
+            cursor.execute("SELECT * FROM customer WHERE customerName = ?", (customerName,))
+            customer = cursor.fetchone()
+            if customer:
+                return customer
+            else:
+                return False
     except Exception as e:
         print(e)
         return False
+
+@app.route('/updateCustomer/<customerName>', methods=['POST','GET'])
+def updateCustomer(customerName):
+    if request.method == 'GET':
+        customer = get_customer_info(customerName)
+        if customer:
+            return render_template('editCustomer.html', customer=customer)
+        else:
+            return "Müşteri bulunamadı."
+    elif request.method == 'POST':
+        customerName = request.form['customerName']
+        budget= request.form['budget']
+        customerEmail=request.form['customerEmail']
+        try:
+            with sqlite3.connect(db) as conn:
+                cursor = conn.cursor()
+                cursor.execute(
+                    "UPDATE customer SET customerName = ?, budget = ?, customerEmail = ? WHERE customerName = ?", (customerName, budget, customerEmail, customerName))
+                conn.commit()
+                #sendMail("Budget Updated", customerName, customerEmail)
+                return render_template("index.html")
+        except Exception as e:
+            print(e)
+            return "Müşteri güncelleme hatası."
 
 
 @app.route('/deleteCustomer/<customerName>', methods=['POST'])
@@ -242,7 +260,7 @@ def deleteCustomer(customerName):
             cursor = conn.cursor()
             cursor.execute("DELETE FROM customer WHERE customerName = ?", (customerName,))
             conn.commit() 
-        return render_template("customers.html")
+        return render_template("index.html")
     except Exception as e:
         print(e)
         return False
