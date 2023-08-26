@@ -47,6 +47,9 @@ def sendMail(message, name, email):
     except Exception as e:
         print(e)
 
+@app.route('/comments')
+def comments():
+    return render_template('comments.html')
 
 @app.route('/')
 def hello():
