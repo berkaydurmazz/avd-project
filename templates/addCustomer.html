@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Müşteri Ekle</title>
+    
+    <style>
+        /* Stil özellikleri */
+        .customer-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .customer-table th, .customer-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .customer-table th {
+            background-color: #f2f2f2;
+        }
+
+        /* Daha fazla stil özelleştirmesi yapabilirsiniz */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Müşteri Ekle</h1>
+        <button id="home-button">Ana Sayfa</button>
+    </header>
+    <footer>
+        Telif Hakkı © 2023 Araba Yorumları Web Sitesi
+    </footer>
+    <!-- Müşteri ekleme formu -->
+    <form action="/addCustomer" method="post">
+        <label for="customerName" >Müşteri Adı:</label>
+        <input type="text" id="customerName" name="customerName" required><br>
+        <label for="customerEmail">Müşteri E-posta:</label>
+        <input type="email" id="customerEmail" name="customerEmail" required><br>
+        <label for="budget">Bütçe:</label>
+        <input type="number" id="budget"  name="budget" required><br>
+        <button type="submit">Ekle</button>
+    </form>
+    <script> 
+        fetch("/addCustomer",{
+                 method: "POST",
+                 body: true
+                 }).then((resp) => resp.json())
+                .then((data) => { 
+                 getCustomer.push({data:resp});
+                    });
+    </script>
+    
+</body>
+</html>

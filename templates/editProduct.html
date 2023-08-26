@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Search for a Comment</title>
+    <style>
+        /* Diğer stiller burada */
+
+        /* Yorum bölümü */
+        .testimonial-section {
+            display: none;
+            /* Başlangıçta gizli olacak */
+            padding: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        .testimonial {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #222;
+            text-align: center;
+            padding: 10px 0;
+            color: white;
+            margin-top: 20px;
+            /* Beyaz şeridi kaldırmak için ekledik */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Araba Yorumları Web Sitesi</h1>
+        <button id="home-button">Ana Sayfa</button>
+    </header><section></section>
+    <footer>
+        Telif Hakkı © 2023 Araba Yorumları Web Sitesi
+    </footer>
+    <h2>Ürün Güncelleme Formu</h2>
+    
+    <form action="/updateProduct" method="POST">
+        <label for="productName">Product Name:</label><br>
+        <input type="text" id="productName" name="productName" required value="{{ product[1] }}"><br><br>
+        
+        <label for="productURL">Product URL:</label><br>
+        <input type="text" id="productURL" name="productURL" required value="{{ product[2] }}"><br><br>
+        
+        <label for="productPrice">Product Price:</label><br>
+        <input type="number" id="productPrice" name="productPrice" required value="{{ product[3] }}"><br><br>
+        
+        <br><br>
+        
+        <input type="submit" value="Güncelle">
+    </form>
+    <script>
+        document.querySelector('form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Formun varsayılan davranışını engelle
+    
+            // Kullanıcıya onay mesajı göster
+            var productName = document.getElementById('productName').value;
+            var productPrice = document.getElementById('productPrice').value;
+            var confirmationMessage = 'Ürün adı: ' + productName + '\nÜrün fiyatı: ' + productPrice + '\nGüncellensin mi?';
+    
+            if (confirm(confirmationMessage)) {
+                // Onaylandığında formu gönder
+                this.submit();
+            } else {
+                // İptal edildiğinde bir şey yapma
+            }
+        });
+    </script>
+    
+    <script> 
+        fetch("/updateProduct",{
+                 method: "POST",
+                 body: true
+                 }).then((resp) => resp.json())
+                .then((data) => { 
+                 getProduct.push({data:resp});
+                    });
+    </script>
+</body>
+</html>

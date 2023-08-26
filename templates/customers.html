@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Flask and SQLite </title>
+	</head>
+	<style>
+		table, th, td {
+		border:1px solid black;
+		}
+		</style>
+	<body>
+		
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<table style="width:100%">
+			<tr>
+			<th>customerName</th>
+			<th>Budget</th>
+			<th>customerEmail</th>
+			<th>Process</th>
+			</tr>
+			{%for product in data%}
+			<tr>
+				<td>{{product[0]}}</td>
+				<td>{{product[1]}}</td>
+				<td>{{product[2]}}</td>
+				<td>
+					<button class="updateButton" id="updateButton" >Güncelle</button>
+					<button class="deleteButton" id="deleteButton" >Müşteriyi Sil</button>
+				</td>
+				</tr>
+			{%endfor%}
+		</table>
+		<script>
+			$(document).ready(function() {
+				// Sayfa yüklendiğinde butonları dinamik olarak etkinleştirin
+				$(".deleteButton").click(function() {
+					var productRow = $(this).closest("tr"); // Tıklanan düğmenin bulunduğu satırı alın
+					var productName = productRow.find("td:first").text(); // İlgili satırın ilk hücresindeki metni alın
+	
+					$.ajax({
+						type: "POST",
+						url: "/deleteCustomer/" + productName, // Sunucu tarafında bu URL'yi işlemeniz gerekiyor
+						success: function(data) {
+							productRow.remove(); // Başarılı ise satırı kaldır
+							alert("Ürün silme işlemi başarılı: " + productName);
+						},
+						error: function(error) {
+							console.log("Hata:", error); alert("Ürün silme işlemi sıkıntılı: " + productName);
+						}
+					});
+				});
+			});
+		</script>	
+		<script>
+			// Delete düğmesine tıklandığında çağrılacak işlev
+			function deleteRow(button) {
+				var row = button.parentNode.parentNode; // Düğme ile ilişkilendirilmiş satırı al
+				var productId = row.cells[0].textContent; // İlgili satırın ilk hücresinden ürün ID'sini alabilirsiniz
+		
+				// Kullanıcıdan silme işlemini onaylamasını isteyebilirsiniz
+				var confirmation = confirm("Bu kullanıcıyı silmek istediğinizden emin misiniz?");
+		
+				if (confirmation) {
+					// Silme işlemini gerçekleştirmek için AJAX veya bir form gönderebilirsiniz
+					// Örnek olarak, bu kod sadece bir uyarı gösterir
+					alert("Ürün silme işlemi başarılı: " + productId);
+		
+					// Eğer silme işlemini yapmak isterseniz, AJAX kullanarak sunucuya göndermelisiniz
+					// Örnek AJAX kodu:
+					 $.ajax({
+					     type: "POST",
+					     url: "/deleteCustomer/" + productId,
+					     success: function(data) {
+							alert("Ürün başarıyla silindi.");
+					     },
+					     error: function(error) {
+							alert("Ürün silinirken bir hata oluştu: " + error.statusText);
+					    }
+					 });
+				}
+			}
+		</script>
+		<style>
+			button#updateButton {
+				padding: 10px 20px;
+				background-color: #007bff;
+				color: #fff;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+				transition: background-color 0.3s ease;
+			}
+	
+			button#updateButton:hover {
+				background-color: #0056b3;
+			}
+			button#deleteButton {
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        	}
+
+        	button#deleteButton:hover {
+        	background-color: #c82333;
+        	}
+		</style>
+	</body>
+</html>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template,request, jsonify
 import sqlite3
 import openai
 import smtplib
@@ -6,7 +6,7 @@ from email.mime.text import MIMEText
 
 
 app = Flask(__name__)
-openai.api_key = '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'
+openai.api_key = ''
 # SQLite veritabanı bağlantısını oluştur
 db = 'mydb.db'
 conn = sqlite3.connect(db)
@@ -30,8 +30,8 @@ cursor.execute('''
 ''')
 
 # Veritabanı değişikliklerini kaydet ve bağlantıyı kapat
-conn.commit()
-conn.close()
+#conn.commit()
+#conn.close()
 
 
 def sendMail(message, name, email):
@@ -52,6 +52,38 @@ def sendMail(message, name, email):
 def hello():
     return render_template('index.html')
 
+@app.route('/addProduct', methods=['GET','POST'])
+def addProduct():
+    if request.method == 'POST':
+        try:
+            productName=request.form['productName']
+            productPrice=request.form['productPrice']
+            productURL=request.form['productURL']
+
+            with sqlite3.connect(db) as conn:
+                cursor = conn.cursor()
+                cursor.execute("INSERT INTO product (productName, productPrice,productURL) VALUES (?, ?,?)",
+                           (productName, productPrice, productURL))
+            conn.commit()
+            conn.close()
+            return render_template('index.html')
+        except Exception as e:
+            print(e)
+    else:
+        return render_template('addProduct.html')
+    
+@app.route('/getProduct',methods=['GET'])
+def getProduct():
+        try:
+            with sqlite3.connect(db) as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT * FROM product")
+                data =cursor.fetchall()
+                return render_template('products.html', data=data)
+        except Exception as e:
+            print(e)
+            return e
+ 
 
 @app.route('/askCommentOpenAI')
 def askCommentOpenAI(productName):
@@ -78,38 +110,49 @@ def askMarkettingDetails(productName):
     reply = chat.choices[0].message['content']
     return reply
 
-
-@app.route('/getProduct')
-def getProduct(all):
-    if all == True:
-        try:
-            with sqlite3.connect(db) as conn:
-                cursor = conn.cursor()
-                cursor.execute("SELECT * FROM product", ())
-                conn.commit()
-                conn.close()
-                return True
-        except Exception as e:
-            print(e)
-            return False
-
-
-@app.route('/addProduct')
-def addProduct(productName, prodcutPrice, productURL):
+# Ürün bilgilerini getiren bir fonksiyon
+@app.route('/get-product-info')
+def get_product_info(productName):
     try:
         with sqlite3.connect(db) as conn:
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO product (productName, prodcutPrice,productURL) VALUES (?, ?)",
-                           (productName, prodcutPrice, productURL))
-            conn.commit()
-            conn.close()
-            return True
+            cursor.execute("SELECT * FROM product WHERE productName = ?", (productName,))
+            product = cursor.fetchone()
+            if product:
+                return product
+            else:
+                return None
     except Exception as e:
         print(e)
-        return False
-
-
-@app.route('/updateProduct')
+        return None
+@app.route('/updateProduct/<productName>', methods=['POST','GET'])
+def updateProduct(productName):
+    """ if request.method == 'GET':
+        productName = request.args.get('productName')
+        product = get_product_info(productName)
+        if product:
+            return render_template('editProduct.html', product=product)
+        else:
+            return "Ürün bulunamadı."
+    
+    el """
+    if request.method == 'POST':
+        productName = request.form['productName']
+        productPrice = request.form['productPrice']
+        productURL=request.form['productURL']
+        try:
+            with sqlite3.connect(db) as conn:
+                cursor = conn.cursor()
+                cursor.execute(
+                    "UPDATE product SET productPrice = ? WHERE productName = ?", (productPrice, productName,productURL))
+                conn.commit()
+                return "Ürün güncellendi."
+        except Exception as e:
+            print(e)
+            return "Ürün güncelleme hatası." 
+        
+#Düzenleme gerekli
+""" @app.route('/updateProduct')
 def updateProduct(productPrice, productName):
     try:
         with sqlite3.connect(db) as conn:
@@ -117,57 +160,64 @@ def updateProduct(productPrice, productName):
             cursor.execute(
                 "UPDATE product SET productPrice = (?) WHERE productName = (?)", (productPrice, productName))
             conn.commit()
-            conn.close()
             return True
     except Exception as e:
         print(e)
-        return False
+        return False """
 
-
-@app.route('/deleteProduct')
+#Düzenleme gerekli
+@app.route('/deleteProduct/<productName>', methods=['POST'])
 def deleteProduct(productName):
     try:
         with sqlite3.connect(db) as conn:
             cursor = conn.cursor()
             cursor.execute(
-                "DELETE FROM product WHERE productName = (?)", (productName))
+                "DELETE FROM product WHERE productName = (?)", (productName,))
             conn.commit()
-            conn.close()
-            return True
+            #conn.close()
+            #return True
+            return render_template("products.html")
     except Exception as e:
         print(e)
-        return False
+        return jsonify({"success": False, "message": "An error occurred while deleting the {productName}"})
 
 
-@app.route('/getCustomer')
-def getCustomer(all):
-    if all == True:
-        try:
-            with sqlite3.connect(db) as conn:
-                cursor = conn.cursor()
-                cursor.execute("SELECT * FROM customer", ())
-                conn.commit()
-                conn.close()
-                return True
-        except Exception as e:
-            print(e)
-            return False
-
-
-@app.route('/addCustomer')
-def addCustomer(customerName, budget, customerEmail):
+@app.route('/getCustomer', methods=['GET'])
+def getCustomer():
     try:
         with sqlite3.connect(db) as conn:
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO customer (customerName, budget,customerEmail) VALUES (?, ?)",
+            cursor.execute("SELECT * FROM customer")
+            
+            # No need to commit for SELECT statements
+            data = cursor.fetchall()
+            
+            # Return the data to the HTML template
+            return render_template('customers.html', data=data)
+    except Exception as e:
+        print(e)
+        return "Can not connect to database"
+        
+
+@app.route('/addCustomer' , methods=['GET','POST'])
+def addCustomer():
+    if request.method == 'POST':
+        try:
+            customerName=request.form['customerName']
+            budget=request.form['budget']
+            customerEmail=request.form['customerEmail']
+
+            with sqlite3.connect(db) as conn:
+                cursor = conn.cursor()
+                cursor.execute("INSERT INTO customer (customerName, budget,customerEmail) VALUES (?, ?,?)",
                            (customerName, budget, customerEmail))
             conn.commit()
             conn.close()
-            return True
-    except Exception as e:
-        print(e)
-        return False
-
+            return render_template('index.html')
+        except Exception as e:
+            print(e)
+    else:
+        return render_template('addCustomer.html')
 
 @app.route('/updateCustomer')
 def updateCustomer(budget, customerName, customerEmail):
@@ -185,16 +235,14 @@ def updateCustomer(budget, customerName, customerEmail):
         return False
 
 
-@app.route('/deleteCustomer')
+@app.route('/deleteCustomer/<customerName>', methods=['POST'])
 def deleteCustomer(customerName):
     try:
         with sqlite3.connect(db) as conn:
             cursor = conn.cursor()
-            cursor.execute(
-                "DELETE FROM customer WHERE customerName = (?)", (customerName))
-            conn.commit()
-            conn.close()
-            return True
+            cursor.execute("DELETE FROM customer WHERE customerName = ?", (customerName,))
+            conn.commit() 
+        return render_template("customers.html")
     except Exception as e:
         print(e)
         return False

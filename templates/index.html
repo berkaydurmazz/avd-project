@@ -38,20 +38,118 @@
             margin-top: 20px;
             /* Beyaz şeridi kaldırmak için ekledik */
         }
+         /* Sağ üst köşedeki menü */
+         .sidebar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+        }
+    
+        .sidebar button {
+            background-color: #FFD700;
+            border: none;
+            color: #333;
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 3px;
+            margin-left: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    
+        .sidebar button:hover {
+            background-color: #FFC800;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 
 <body>
     <header>
         <h1>Araba Yorumları Web Sitesi</h1>
-        <button id="home-button">Ana Sayfa</button>
-    </header>
+        <button id="home-button">Ana Sayfa</button><br/>
+        <!-- <button class="btn" type="button" id="addProductButton">Add Product Page</button>
+        <button class="btn" type="button" id="getProduct">List Products </button> -->
+
+<!-- <script>
+    // Add a click event listener to the button
+    document.getElementById("addProductButton").addEventListener("click", function() {
+        // Redirect to the 'addProduct' route
+        window.location.href = "/addProduct";
+    });
+
+    document.getElementById("getProduct").addEventListener("click", function() {
+        window.location.href = "/getProduct";
+    });
+</script> -->
+
     <main>
         <section class="search-section">
             <div class="search-form">
                 <h2>Araba Yorumlarını Sorgula</h2>
                 <input type="text" id="car-input" placeholder="Araba Markası Girin...">
                 <button id="search-button">Sorgula</button>
+            </div>
+            <div class="sidebar">
+    
+                <button id="addProductButton">Ürün Ekle</button>
+                <script>/*
+                    // Add a click event listener to the button
+                    document.getElementById("addProductButton").addEventListener("click", function() {
+                        // Redirect to the 'addProduct' route
+                        window.location.href = "/addProduct";
+                    });
+                
+                    document.getElementById("getProduct").addEventListener("click", function() {
+                        window.location.href = "/getProduct";
+                    });
+                </script>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var addProductButton = document.getElementById("addProductButton");
+                        addProductButton.addEventListener("click", function () {
+                            window.location.href = "/addProduct";
+                        });
+                    });
+                </script>
+                   
+                
+                   
+                </body>
+                <button id="list_products_button">Ürünleri Listele</button>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var listProductsButton = document.getElementById("list_products_button");
+                        listProductsButton.addEventListener("click", function () {
+                            window.location.href = "/getProduct";
+                        });
+                    });
+                </script>
+                 <button id="add_customer_button">Müşteri Ekle</button>
+                 <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var addCustomerButton = document.getElementById("add_customer_button");
+                        addCustomerButton.addEventListener("click", function () {
+                            window.location.href = "/addCustomer";
+                           // window.location.href = "musteriekle.html";
+                        });
+                    });
+                </script>
+               <button id="list_customers_button">Müşteri Listele</button>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var listCustomersButton = document.getElementById("list_customers_button");
+                        listCustomersButton.addEventListener("click", function () {
+                            window.location.href = "/getCustomer";
+                           // window.location.href = "musterilistele.html";
+                        });
+                    });
+                </script>
             </div>
         </section>
         <section class="result-section" id="result-section">
@@ -234,11 +332,10 @@
                 fetch("/getProduct",{
                     method: "POST",
                     body: true
-                }).then((resp) => resp.json())
+                }).then((resp) => resp.json())  
                 .then((data) => { 
-                    getProduct.push({data:resp});
-                }
-
+                getProduct.push({data:resp});
+                })
                 // Sonuçları temizle
                 resultSection.innerHTML = "";
                 testimonialsContainer.innerHTML = "";
@@ -271,6 +368,215 @@
                 testimonialsContainer.innerHTML = "";
             }
         });
+        
+    </script>
+    <script>
+      /*  document.addEventListener("DOMContentLoaded", function () {
+            const searchButton = document.getElementById("search-button");
+            const resultSection = document.getElementById("result-section");
+            const testimonialSection = document.getElementById("testimonial-section");
+            const carInput = document.getElementById("car-input");
+            const homeButton = document.getElementById("home-button"); // Ana Sayfa butonu
+            const testimonialsContainer = document.getElementById("testimonials-container");
+
+            // Ana Sayfa butonuna tıklandığında
+            homeButton.addEventListener("click", function () {
+                clearResults(); // Ürün arama sonuçlarını temizle
+                clearTestimonials(); // Yorumları temizle
+                location.reload(); // Sayfayı yeniden yükle
+            });
+
+            searchButton.addEventListener("click", function () {
+                const enteredCar = carInput.value.trim();
+
+                // Araba sorgusu için API isteği yapabilirsiniz veya burada elinizdeki veriyi kullanabilirsiniz
+                // Bu örnek için sabit bir veri kullanıyoruz
+                const carData = [
+                    {
+                        name: "Mercedes",
+                        testimonials: [
+                            { comment: "Harika bir araç, performansı mükemmel!", author: "Ali K" },
+                            { comment: "Konforlu bir sürüş deneyimi sunuyor.", author: "Ayşe D" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Volvo",
+                        testimonials: [
+                            { comment: "Güvenliğiyle ön planda bir araç.", author: "Mehmet Y" },
+                            { comment: "Ailem için ideal bir tercih oldu.", author: "Zeynep A" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Audi",
+                        testimonials: [
+                            { comment: "Tasarımı ve teknolojisi ile etkileyici.", author: "Can T" },
+                            { comment: "Ses sistemi muhteşem!", author: "Ece K" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "BMW",
+                        testimonials: [
+                            { comment: "Lüks ve sportif bir araç.", author: "Eren S" },
+                            { comment: "Sürüş keyfi harika!", author: "Selin A" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Toyota",
+                        testimonials: [
+                            { comment: "Ekonomik ve dayanıklı bir araç.", author: "Ahmet B" },
+                            { comment: "Uzun yıllar kullanıyorum, memnunum.", author: "Fatma G" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Honda",
+                        testimonials: [
+                            { comment: "Kompakt bir araç olmasına rağmen geniş iç mekan sunuyor.", author: "Deniz M" },
+                            { comment: "Yakıt ekonomisi harika.", author: "Elif B" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Ford",
+                        testimonials: [
+                            { comment: "Güçlü motor seçenekleri sunuyor.", author: "Kadir O" },
+                            { comment: "Yol tutuşu gayet iyi.", author: "Gizem E" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Nissan",
+                        testimonials: [
+                            { comment: "Fiyat performans açısından tatmin edici bir seçenek.", author: "Emre K" },
+                            { comment: "Şehir içi kullanıma uygun.", author: "Seda Y" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Mazda",
+                        testimonials: [
+                            { comment: "Şık tasarımı ve güçlü motoru ile dikkat çekiyor.", author: "Gözde A" },
+                            { comment: "Sürüş zevki veren bir araç.", author: "Onur M" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Tesla",
+                        testimonials: [
+                            { comment: "Elektrikli motorunun hızı etkileyici.", author: "Ali K" },
+                            { comment: "Otomatik sürüş özelliği çok güven verici.", author: "Ayşe D" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Subaru",
+                        testimonials: [
+                            { comment: "Dört tekerlekten çekişi ile off-road performansı harika.", author: "Mehmet Y" },
+                            { comment: "Kış aylarında çok güvenilir bir seçenek.", author: "Zeynep A" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Hyundai",
+                        testimonials: [
+                            { comment: "Fiyat ve özellik dengesi çok iyi.", author: "Ahmet B" },
+                            { comment: "Uzun yolculuklarda rahatlık sunuyor.", author: "Fatma G" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Kia",
+                        testimonials: [
+                            { comment: "Yüksek donanım seviyesi ile dikkat çekiyor.", author: "Eren S" },
+                            { comment: "Yakıt ekonomisi beklentilerimi karşılıyor.", author: "Selin A" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Chevrolet",
+                        testimonials: [
+                            { comment: "Geniş iç mekanı ile ailem için uygun bir tercih.", author: "Can T" },
+                            { comment: "Güçlü motor seçenekleri sunuyor.", author: "Ece K" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Jaguar",
+                        testimonials: [
+                            { comment: "Lüks ve prestijli bir araç.", author: "Deniz M" },
+                            { comment: "Ses sistemi ve iç tasarımı muhteşem.", author: "Elif B" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Lexus",
+                        testimonials: [
+                            { comment: "Üstün kalitesi ve rahat sürüş deneyimi ile öne çıkıyor.", author: "Kadir O" },
+                            { comment: "İleri düzey güvenlik teknolojileri ile donatılmış.", author: "Gizem E" }
+                            // Diğer yorumlar...
+                        ]
+                    },
+                    {
+                        name: "Peugeot",
+                        testimonials: [
+                            { comment: "Şık tasarımı ve yakıt ekonomisi beni memnun etti.", author: "Emre K" },
+                            { comment: "Şehir içi kullanıma uygun boyutlarda.", author: "Seda Y" }
+                            // Diğer yorumlar...
+                        ]
+                    }
+                    // Yeni arabalar ve yorumları...
+                ];
+
+                // Seçilen arabanın verilerini bul
+                const selectedCarData = carData.find(car => car.name.toLowerCase() === enteredCar.toLowerCase());
+                const getProduct = [];
+                fetch("/getProduct",{
+                    method: "POST",
+                    body: true
+                }).then((resp) => resp.json())
+                .then((data) => { 
+                    getProduct.push({data:resp});
+                })
+                .catch((error) => {
+                     console.error("Error:", error);
+                });
+
+                // Sonuçları temizle
+                resultSection.innerHTML = "";
+                testimonialsContainer.innerHTML = "";
+
+                if (selectedCarData) {
+                    // Arabaya ait yorumları ekrana ekleyin
+                    selectedCarData.testimonials.forEach(function (testimonial) {
+                        const testimonialDiv = document.createElement("div");
+                        testimonialDiv.className = "testimonial";
+                        testimonialDiv.innerHTML = `
+                            <p>"${testimonial.comment}"</p>
+                            <p class="testimonial-author">- ${testimonial.author}</p>
+                        `;
+                        testimonialsContainer.appendChild(testimonialDiv);
+                    });
+
+                    testimonialSection.style.display = "block"; // Yorumları göster
+                } else {
+                    // Ürün bulunamadı mesajı ekleyin
+                    resultSection.innerHTML = "<p>Ürün bulunamadı.</p>";
+                    testimonialSection.style.display = "none"; // Yorumları gizle
+                }
+            });
+
+            function clearResults() {
+                resultSection.innerHTML = "";
+            }
+
+            function clearTestimonials() {
+                testimonialsContainer.innerHTML = "";
+            }
+        });*/
     </script>
 </body>
 

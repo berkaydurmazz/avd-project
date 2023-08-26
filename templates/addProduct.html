@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Search for a Comment</title>
+    <style>
+        /* Diğer stiller burada */
+
+        /* Yorum bölümü */
+        .testimonial-section {
+            display: none;
+            /* Başlangıçta gizli olacak */
+            padding: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        .testimonial {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #222;
+            text-align: center;
+            padding: 10px 0;
+            color: white;
+            margin-top: 20px;
+            /* Beyaz şeridi kaldırmak için ekledik */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Araba Yorumları Web Sitesi</h1>
+        <button id="home-button">Ana Sayfa</button>
+    </header>
+    <main>
+        <section class="search-section">
+            <div class="search-form">
+                <h2>Araba Yorumlarını Sorgula</h2>
+                <input type="text" id="car-input" placeholder="Araba Markası Girin...">
+                <button id="search-button">Sorgula</button>
+            </div>
+        </section>
+        <section class="result-section" id="result-section">
+            <!-- Sorgu sonuçları burada gösterilecek -->
+        </section>
+        <section class="testimonial-section" id="testimonial-section">
+            <h2>Müşteri Yorumları</h2>
+            <div class="testimonials-container" id="testimonials-container">
+                <!-- Yorumlar burada gösterilecek -->
+            </div>
+        </section>
+    </main>
+    <footer>
+        Telif Hakkı © 2023 Araba Yorumları Web Sitesi
+    </footer>
+    <h2>Ürün Ekleme Formu</h2>
+    <form action="/addProduct" method="post">
+        <label for="productName">Product Name:</label><br>
+        <input type="text" id="productName" name="productName" required><br><br>
+        
+        <label for="productURL">productURL :</label><br>
+        <input type="text" id="productURL" name="productURL" required><br><br>
+        
+        <label for="productPrice">Product Price:</label><br>
+        <input type="number" id="productPrice" name="productPrice" required><br><br>
+        
+        <br><br>
+        
+        <input type="submit" value="Ürün Ekle">
+    </form>
+    <script> 
+        fetch("/addProduct",{
+                 method: "POST",
+                 body: true
+                 }).then((resp) => resp.json())
+                .then((data) => { 
+                 getProduct.push({data:resp});
+                    });
+    </script>
+</body>
+</html>
