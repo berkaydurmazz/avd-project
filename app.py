@@ -38,14 +38,16 @@ def sendMail(message, name, email):
     try:
         msg = MIMEText(message)
         msg['Subject'] = 'Budget Changed'
+        msg['From'] = 'productcommenterai@outlook.com'
         msg['To'] = email
         server = smtplib.SMTP('smtp.office365.com', 587)
         server.starttls()
-        server.login('your_outlook_email@example.com', 'your_password')
-        server.sendmail(msg['From'], email, name)
+        server.login('', '')
+        server.sendmail(msg['From'], email, msg.as_string())
         server.quit()
+        print("Email sent successfully!")
     except Exception as e:
-        print(e)
+        print("An error occurred:", e)
 
 @app.route('/details/<productName>', methods=['GET'])
 def comments(productName):
@@ -56,7 +58,8 @@ def comments(productName):
             comment3 =askCommentOpenAI(productName)
             comment4 =askCommentOpenAI(productName)
             comment5 =askCommentOpenAI(productName)
-            return render_template('comments.html', product=product,comment1=comment1,comment2=comment2,comment3=comment3,comment4=comment4,comment5=comment5)
+            detail=askMarkettingDetails(productName)
+            return render_template('comments.html', product=product,comment1=comment1,comment2=comment2,comment3=comment3,comment4=comment4,comment5=comment5,detail=detail)
     else:
             return "Ürün bulunamadı."
 
@@ -115,13 +118,15 @@ def askCommentOpenAI(productName):
 
 @app.route('/askMarkettingDetails')
 def askMarkettingDetails(productName):
-    marketAdviser = "Imagine you are a marketting professonal, I will give you a product name and i except a commment from you. I will expect 100 characters reponses. Product name : "
+    marketAdviser = """Imagine you are a marketting  professional, I will give you a product name and I expect an description about the product  in a few sentences from you.
+      I will expect 100 characters reponses.Do not write again product name Product name : """
     openaiPromt = marketAdviser + productName
-    message = [{"role": "system", "content": "You are a marketting professonal"}, {
+    message = [{"role": "system", "content": "You are a marketting  professional"}, {
         "role": "user", "content": openaiPromt}]
     chat = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=message)
+        messages=message,
+        temperature=0.7,)
     reply = chat.choices[0].message['content']
     return reply
 
@@ -246,7 +251,7 @@ def updateCustomer(customerName):
                 cursor.execute(
                     "UPDATE customer SET customerName = ?, budget = ?, customerEmail = ? WHERE customerName = ?", (customerName, budget, customerEmail, customerName))
                 conn.commit()
-                #sendMail("Budget Updated", customerName, customerEmail)
+                sendMail("Budget Updated", customerName, customerEmail)
                 return render_template("index.html")
         except Exception as e:
             print(e)
