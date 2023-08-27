@@ -47,9 +47,18 @@ def sendMail(message, name, email):
     except Exception as e:
         print(e)
 
-@app.route('/comments')
-def comments():
-    return render_template('comments.html')
+@app.route('/details/<productName>', methods=['GET'])
+def comments(productName):
+    product = get_product_info(productName)
+    if product:
+            comment1 =askCommentOpenAI(productName)
+            comment2 =askCommentOpenAI(productName)
+            comment3 =askCommentOpenAI(productName)
+            comment4 =askCommentOpenAI(productName)
+            comment5 =askCommentOpenAI(productName)
+            return render_template('comments.html', product=product,comment1=comment1,comment2=comment2,comment3=comment3,comment4=comment4,comment5=comment5)
+    else:
+            return "Ürün bulunamadı."
 
 @app.route('/')
 def hello():
@@ -90,16 +99,19 @@ def getProduct():
 
 @app.route('/askCommentOpenAI')
 def askCommentOpenAI(productName):
-    productPromt = "Imagine you are a art collector, I will give you a product name and i except a commment from you. I will expect 100 characters reponses. Product name : "
+    productPromt = """Imagine you are a store sales manager, I will give you a product name and i expect good or bad a comment from you.
+    Do not specify or enumerate it .I will expect 100 characters reponses. Product name : """
     openaiPromt = productPromt + productName
-    message = [{"role": "system", "content": "You are a art collector"}, {
+    message = [{"role": "system", "content": "You are a store sales manager"}, {
         "role": "user", "content": openaiPromt}]
     chat = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=message)
+        messages=message,
+        temperature=0.7,  # Adjust the temperature for creativity
+    )
     reply = chat.choices[0].message['content']
+    print(reply) 
     return reply
-
 
 @app.route('/askMarkettingDetails')
 def askMarkettingDetails(productName):
@@ -128,13 +140,11 @@ def get_product_info(productName):
     except Exception as e:
         print(e)
         return False
+    
 @app.route('/updateProduct/<productName>', methods=['POST','GET'])
 def updateProduct(productName):
      if request.method == 'GET':
-        #productName = request.args.get('productName')
-        print(productName)
         product = get_product_info(productName)
-        print(product)
         if product:
             return render_template('editProduct.html', product=product)
         else:
@@ -142,11 +152,8 @@ def updateProduct(productName):
     
      elif request.method == 'POST':
         productName = request.form['productName']
-        print(productName)
         productPrice = request.form['productPrice']
-        print(productPrice)
         productURL=request.form['productURL']
-        print(productURL)
         try:
             with sqlite3.connect(db) as conn:
                 cursor = conn.cursor()
@@ -159,7 +166,6 @@ def updateProduct(productName):
             return "Ürün güncelleme hatası." 
         
 
-#Düzenleme gerekli
 @app.route('/deleteProduct/<productName>', methods=['POST'])
 def deleteProduct(productName):
     try:
@@ -168,8 +174,6 @@ def deleteProduct(productName):
             cursor.execute(
                 "DELETE FROM product WHERE productName = (?)", (productName,))
             conn.commit()
-            #conn.close()
-            #return True
             return render_template("products.html")
     except Exception as e:
         print(e)
@@ -182,11 +186,7 @@ def getCustomer():
         with sqlite3.connect(db) as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM customer")
-            
-            # No need to commit for SELECT statements
             data = cursor.fetchall()
-            
-            # Return the data to the HTML template
             return render_template('customers.html', data=data)
     except Exception as e:
         print(e)

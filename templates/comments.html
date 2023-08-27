@@ -253,6 +253,32 @@ body {
    width: 320px;
  }
 }
+.sidebar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+        }
+.sidebar button {
+            background-color:#bc0000;
+            border: none;
+            color: #ffffff;
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 3px;
+            margin-left: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar button:hover {
+            background-color: #ff0000;
+            transform: scale(1.05);
+        }
     </style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -271,31 +297,29 @@ body {
 
 					<div class="comment-box">
 						<div class="comment-head">
-							<h6 class="comment-name by-author"><a href="#">Agustin Ortiz</a></h6>
-							<span>20 minutes ago</span>
+							<h6 class="comment-name by-author"><a href="#">Berkay Durmaz</a></h6>
+							<div id="timeAgo1"></div>
 							<i class="fa fa-reply"></i>
 							<i class="fa fa-heart"></i>
 						</div>
 						<div class="comment-content">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
-						</div>
+                            {{ comment1 }}
+                        </div>
 					</div>
 				</div>
-
-				<ul class="comments-list reply-list">
 					<li>
 
 						<div class="comment-avatar"><img src="/static/images/mert.jpg" alt=""></div>
 
 						<div class="comment-box">
 							<div class="comment-head">
-								<h6 class="comment-name"><a href="#">Lorena Rojero</a></h6>
-								<span>10 minutes ago</span>
+								<h6 class="comment-name"><a href="#">Mert Cebecik</a></h6>
+                                <div id="timeAgo2"></div>
 								<i class="fa fa-reply"></i>
 								<i class="fa fa-heart"></i>
 							</div>
 							<div class="comment-content">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
+                                {{ comment2 }}
 							</div>
 						</div>
 					</li>
@@ -306,17 +330,17 @@ body {
 
 						<div class="comment-box">
 							<div class="comment-head">
-								<h6 class="comment-name by-author"><a href="#">Agustin Ortiz</a></h6>
-								<span>10 minutes ago</span>
+								<h6 class="comment-name by-author"><a href="#">Rüveyda Yıldırım</a></h6>
+								<div id="timeAgo3"></div>
 								<i class="fa fa-reply"></i>
 								<i class="fa fa-heart"></i>
 							</div>
 							<div class="comment-content">
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
+                                {{ comment3 }}
 							</div>
 						</div>
 					</li>
-				</ul>
+				
 			</li>
 
 			<li>
@@ -326,18 +350,47 @@ body {
 
 					<div class="comment-box">
 						<div class="comment-head">
-							<h6 class="comment-name"><a href="#">Lorena Rojero</a></h6>
-							<span>10 minutes ago</span>
+							<h6 class="comment-name"><a href="#">Enes Öztürk</a></h6>
+							<div id="timeAgo4"></div>
 							<i class="fa fa-reply"></i>
 							<i class="fa fa-heart"></i>
 						</div>
 						<div class="comment-content">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit omnis animi et iure laudantium vitae, praesentium optio, sapiente distinctio illo?
+                            {{ comment4 }}
+						</div>
+					</div>
+				</div>
+			</li>
+            <li>
+				<div class="comment-main-level">
+
+					<div class="comment-avatar"><img src="/static/images/sar.jpeg" alt=""></div>
+
+					<div class="comment-box">
+						<div class="comment-head">
+							<h6 class="comment-name"><a href="#">Sarp Görener</a></h6>
+							<div id="timeAgo5"></div>
+							<i class="fa fa-reply"></i>
+							<i class="fa fa-heart"></i>
+						</div>
+						<div class="comment-content">
+                            {{ comment5 }}
 						</div>
 					</div>
 				</div>
 			</li>
 		</ul>
 	</div>
+    <script>
+        // Rastgele zaman dilimleri oluştur
+        var timeOptions = ["1 dakika önce", "2 saat önce", "5 saat önce", "1 gün önce", "2 gün önce"];
+    
+        // Her bir <div> için ayrı ayrı rastgele zamanı ayarla
+        for (var i = 1; i <= 5; i++) {
+            var randomIndex = Math.floor(Math.random() * timeOptions.length);
+            var randomTime = timeOptions[randomIndex];
+            document.getElementById("timeAgo" + i).textContent = randomTime;
+        }
+    </script>
   </body>
 </html>
