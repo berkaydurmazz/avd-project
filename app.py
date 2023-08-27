@@ -6,7 +6,7 @@ from email.mime.text import MIMEText
 
 
 app = Flask(__name__)
-openai.api_key = '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'
+openai.api_key = ''
 # SQLite veritabanı bağlantısını oluştur
 db = 'mydb.db'
 conn = sqlite3.connect(db)
