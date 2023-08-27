@@ -4,28 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <title>Edit the Product</title>
+    <title>Ürün Güncelleme Sayfası</title>
     <style>
-        /* Diğer stiller burada */
-
-        /* Yorum bölümü */
-        .testimonial-section {
-            display: none;
-            /* Başlangıçta gizli olacak */
-            padding: 20px;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
-
-        .testimonial {
-            font-style: italic;
-            margin-bottom: 10px;
-        }
-
-        .testimonial-author {
-            font-weight: bold;
-        }
-
         footer {
             position: fixed;
             bottom: 0;
@@ -35,9 +15,7 @@
             padding: 10px 0;
             color: white;
             margin-top: 20px;
-            /* Beyaz şeridi kaldırmak için ekledik */
         }
-        /* Sağ üst köşedeki menü */
         .sidebar {
             position: fixed;
             top: 20px;
@@ -49,9 +27,9 @@
         }
     
         .sidebar button {
-            background-color: #FFD700;
+            background-color:#bc0000;
             border: none;
-            color: #333;
+            color: #ffffff;
             padding: 6px 12px;
             font-size: 12px;
             border-radius: 3px;
@@ -60,11 +38,77 @@
             transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
         }
-    
+
         .sidebar button:hover {
-            background-color: #FFC800;
+            background-color: #ff0000;
             transform: scale(1.05);
-        }   
+        } 
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="number"] {
+            width: 20%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        button[type="submit"] {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #2980b9;
+        }
     </style>
 </head>
 <body>
@@ -73,52 +117,8 @@
         <button id="home-button">Ana Sayfa</button><br/>
         <section class="search-section">
             <div class="sidebar">
-                <button id="addProductButton">Ürün Ekle</button>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var addProductButton = document.getElementById("addProductButton");
-                        addProductButton.addEventListener("click", function () {
-                            window.location.href = "/addProduct";
-                        });
-                    });
-                </script>
-                </body>
-                <button id="list_products_button">Ürünleri Listele</button>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var listProductsButton = document.getElementById("list_products_button");
-                        listProductsButton.addEventListener("click", function () {
-                            window.location.href = "/getProduct";
-                        });
-                    });
-                </script>
-                 <button id="add_customer_button">Müşteri Ekle</button>
-                 <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var addCustomerButton = document.getElementById("add_customer_button");
-                        addCustomerButton.addEventListener("click", function () {
-                            window.location.href = "/addCustomer";
-                        });
-                    });
-                </script>
-               <button id="list_customers_button">Müşteri Listele</button>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var listCustomersButton = document.getElementById("list_customers_button");
-                        listCustomersButton.addEventListener("click", function () {
-                            window.location.href = "/getCustomer";
-                        });
-                    });
-                </script>
-            </div>
-        </section>
-        <section class="result-section" id="result-section">
-            <!-- Sorgu sonuçları burada gösterilecek -->
-        </section>
-        <section class="testimonial-section" id="testimonial-section">
-            <h2>Müşteri Yorumları</h2>
-            <div class="testimonials-container" id="testimonials-container">
-                <!-- Yorumlar burada gösterilecek -->
+                <button id="list_products_button">Ürünleri Listele</button> 
+                <button id="list_customers_button">Müşteri Listele</button>
             </div>
         </section>
     </header>
@@ -128,18 +128,18 @@
     <h2>Ürün Güncelleme Formu</h2>
     
     <form action="/updateProduct/{{ product[0] }}"    method="POST">
-        <label for="productName">Product Name:</label><br>
+        <label for="productName">Ürünün Adı</label><br>
         <input type="text" id="productName" name="productName" required value="{{ product[0] }}" readonly><br><br>
         
-        <label for="productURL">Product URL:</label><br>
+        <label for="productURL">Ürünün URL Giriniz</label><br>
         <input type="text" id="productURL" name="productURL" required value="{{ product[2] }}"><br><br>
         
-        <label for="productPrice">Product Price:</label><br>
+        <label for="productPrice">Ürünün Fiyatını Giriniz</label><br>
         <input type="number" id="productPrice" name="productPrice" required value="{{ product[1] }}"><br><br>
         
         <br><br>
         
-        <input type="submit" value="Güncelle">
+        <button type="submit">Güncelle</button>
     </form>
     <script> 
     const url = "/updateProduct/" + productName;
@@ -148,27 +148,32 @@
     })
     .then((resp) => resp.json())
     .then((data) => {
-        // Handle the response data here
         getProduct.push({ data: data });
     })
     .catch((error) => {
-        // Handle any errors that occur during the fetch or JSON parsing
         console.error("Error:", error);
     });
     
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const homeButton = document.getElementById("home-button"); // Ana Sayfa butonu
-
-            // Ana Sayfa butonuna tıklandığında
+            const homeButton = document.getElementById("home-button");
             homeButton.addEventListener("click", function () {
                 window.location.href = '/';
             });
-
-            
         });
-        
+        document.addEventListener("DOMContentLoaded", function () {
+                        var listProductsButton = document.getElementById("list_products_button");
+                        listProductsButton.addEventListener("click", function () {
+                            window.location.href = "/getProduct";
+                        });
+            });
+            document.addEventListener("DOMContentLoaded", function () {
+                        var listCustomersButton = document.getElementById("list_customers_button");
+                        listCustomersButton.addEventListener("click", function () {
+                            window.location.href = "/getCustomer";
+                        });
+            });
     </script>
 </body>
 </html>

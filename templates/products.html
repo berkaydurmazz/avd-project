@@ -33,9 +33,9 @@
         }
     
         .sidebar button {
-            background-color: #FFD700;
+            background-color:#bc0000;
             border: none;
-            color: #333;
+            color: #ffffff;
             padding: 6px 12px;
             font-size: 12px;
             border-radius: 3px;
@@ -44,9 +44,9 @@
             transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
         }
-    
+
         .sidebar button:hover {
-            background-color: #FFC800;
+            background-color: #ff0000;
             transform: scale(1.05);
         }
         /* Tablo stilleri */
@@ -80,64 +80,19 @@
         <button id="home-button">Ana Sayfa</button><br/>
         <section class="search-section">
             <div class="sidebar">
-                <button id="addProductButton">Ürün Ekle</button>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var addProductButton = document.getElementById("addProductButton");
-                        addProductButton.addEventListener("click", function () {
-                            window.location.href = "/addProduct";
-                        });
-                    });
-                </script>
-                </body>
                 <button id="list_products_button">Ürünleri Listele</button>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var listProductsButton = document.getElementById("list_products_button");
-                        listProductsButton.addEventListener("click", function () {
-                            window.location.href = "/getProduct";
-                        });
-                    });
-                </script>
-                 <button id="add_customer_button">Müşteri Ekle</button>
-                 <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var addCustomerButton = document.getElementById("add_customer_button");
-                        addCustomerButton.addEventListener("click", function () {
-                            window.location.href = "/addCustomer";
-                           // window.location.href = "musteriekle.html";
-                        });
-                    });
-                </script>
-               <button id="list_customers_button">Müşteri Listele</button>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var listCustomersButton = document.getElementById("list_customers_button");
-                        listCustomersButton.addEventListener("click", function () {
-                            window.location.href = "/getCustomer";
-                           // window.location.href = "musterilistele.html";
-                        });
-                    });
-                </script>
-            </div>
-        </section>
-        <section class="result-section" id="result-section">
-            <!-- Sorgu sonuçları burada gösterilecek -->
-        </section>
-        <section class="testimonial-section" id="testimonial-section">
-            <!-- <h2>Müşteri Yorumları</h2> -->
-            <div class="testimonials-container" id="testimonials-container">
-                <!-- Yorumlar burada gösterilecek -->
+                <button id="list_customers_button">Müşteri Listele</button>
             </div>
         </section>
     </header>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-		<table  class="customer-table" style="width:100%">
+     <div style="position: relative;">  
+     <table class="customer-table" style="width: 100%; margin-bottom: 20px;">
 			<tr>
-			<th>productName</th>
-			<th>productPrice</th>
-			<th>productURL</th>
-			<th>Process</th>
+			<th>Ürün Adı</th>
+			<th>Fiyat</th>
+			<th>Ürün URL</th>
+			<th>İşlem</th>
 			</tr>
 			{%for product in data%}
 			<tr>
@@ -145,13 +100,16 @@
 				<td>{{product[1]}}</td>
 				<td>{{product[2]}}</td>
 				<td>
+                    <button class="detailButton" id="detailButton" >Detay</button>
 					<button class="updateButton" id="updateButton" >Güncelle</button>
 					<button class="deleteButton" id="deleteButton" >Ürünü Sil</button>
 				</td>
 				</tr>
 			{%endfor%}
 		</table>
-        <footer>
+        <button id="addProductButton" style="position: absolute; top: 50; right: 32% ; background-color: #bc0000; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Ürün Ekle</button>
+    </div> 
+    <footer>
 			Telif Hakkı © 2023 Ürün Yorumları Web Sitesi
 		</footer>
         <script>
@@ -177,6 +135,12 @@
 					var productRow = $(this).closest("tr"); // Tıklanan düğmenin bulunduğu satırı alın
 					var productName = productRow.find("td:first").text(); // İlgili satırın ilk hücresindeki metni alın
                     window.location.href = "/updateProduct/"  + productName
+					
+				});
+                $(".detailButton").click(function() {
+					var productRow = $(this).closest("tr"); // Tıklanan düğmenin bulunduğu satırı alın
+					var productName = productRow.find("td:first").text(); // İlgili satırın ilk hücresindeki metni alın
+                    window.location.href = "/details/"  + productName
 					
 				});
 			});
@@ -210,7 +174,23 @@
         	button#deleteButton:hover {
         	background-color: #c82333;
         	}
-            
+        
+            button#detailButton {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #e47610;
+                color: rgb(255, 255, 255);
+                text-decoration: none;
+                border: none;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+                font-weight: bold;
+                cursor: pointer;
+            }
+
+            button#detailButton:hover {
+                background-color: #b34b00;
+            }
 		</style>
         <script>
 			document.addEventListener("DOMContentLoaded", function () {
@@ -220,10 +200,26 @@
 				homeButton.addEventListener("click", function () {
 					window.location.href = '/';
 				});
-	
-				
 			});
-			
+            
+            document.addEventListener("DOMContentLoaded", function () {
+                var addProductButton = document.getElementById("addProductButton");
+                addProductButton.addEventListener("click", function () {
+                window.location.href = "/addProduct";
+                });
+            });
+            document.addEventListener("DOMContentLoaded", function () {
+                        var listProductsButton = document.getElementById("list_products_button");
+                        listProductsButton.addEventListener("click", function () {
+                            window.location.href = "/getProduct";
+                        });
+            });
+            document.addEventListener("DOMContentLoaded", function () {
+                        var listCustomersButton = document.getElementById("list_customers_button");
+                        listCustomersButton.addEventListener("click", function () {
+                            window.location.href = "/getCustomer";
+                        });
+                    });         
 		</script>
 </body>
 </html>

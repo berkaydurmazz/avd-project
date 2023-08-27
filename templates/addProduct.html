@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <title>Ürün Ekleme Sayfası</title>
     <style>
-        
         footer {
             position: fixed;
             bottom: 0;
@@ -16,9 +15,7 @@
             padding: 10px 0;
             color: white;
             margin-top: 20px;
-            /* Beyaz şeridi kaldırmak için ekledik */
         }
-        /* Sağ üst köşedeki menü */
         .sidebar {
             position: fixed;
             top: 20px;
@@ -30,9 +27,9 @@
         }
     
         .sidebar button {
-            background-color: #FFD700;
+            background-color:#bc0000;
             border: none;
-            color: #333;
+            color: #ffffff;
             padding: 6px 12px;
             font-size: 12px;
             border-radius: 3px;
@@ -41,9 +38,9 @@
             transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
         }
-    
+
         .sidebar button:hover {
-            background-color: #FFC800;
+            background-color: #ff0000;
             transform: scale(1.05);
         }
         body {
@@ -108,6 +105,9 @@
         a:hover {
             color: #2980b9;
         }
+        h2 {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -116,45 +116,8 @@
         <button id="home-button">Ana Sayfa</button><br/>
         <section class="search-section">
             <div class="sidebar">
-                <button id="addProductButton">Ürün Ekle</button>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var addProductButton = document.getElementById("addProductButton");
-                        addProductButton.addEventListener("click", function () {
-                            window.location.href = "/addProduct";
-                        });
-                    });
-                </script>
-                </body>
-                <button id="list_products_button">Ürünleri Listele</button>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var listProductsButton = document.getElementById("list_products_button");
-                        listProductsButton.addEventListener("click", function () {
-                            window.location.href = "/getProduct";
-                        });
-                    });
-                </script>
-                 <button id="add_customer_button">Müşteri Ekle</button>
-                 <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var addCustomerButton = document.getElementById("add_customer_button");
-                        addCustomerButton.addEventListener("click", function () {
-                            window.location.href = "/addCustomer";
-                           // window.location.href = "musteriekle.html";
-                        });
-                    });
-                </script>
-               <button id="list_customers_button">Müşteri Listele</button>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var listCustomersButton = document.getElementById("list_customers_button");
-                        listCustomersButton.addEventListener("click", function () {
-                            window.location.href = "/getCustomer";
-                           // window.location.href = "musterilistele.html";
-                        });
-                    });
-                </script>
+                <button id="list_products_button">Ürünleri Listele</button> 
+                   <button id="list_customers_button">Müşteri Listele</button>
             </div>
         </section>
         
@@ -164,13 +127,13 @@
     </footer>
     <h2>Ürün Ekleme Formu</h2>
     <form action="/addProduct" method="post">
-        <label for="productName">Product Name:</label><br>
+        <label for="productName">Ürünün Adını Giriniz</label><br>
         <input type="text" id="productName" name="productName" required><br><br>
         
-        <label for="productURL">productURL :</label><br>
+        <label for="productURL">Ürünün URL Giriniz</label><br>
         <input type="text" id="productURL" name="productURL" required><br><br>
         
-        <label for="productPrice">Product Price:</label><br>
+        <label for="productPrice">Ürünün Fiyatını Giriniz</label><br>
         <input type="number" id="productPrice" name="productPrice" required><br><br>
         
         <br><br>
@@ -197,6 +160,18 @@
 
             
         });
+        document.addEventListener("DOMContentLoaded", function () {
+                        var listProductsButton = document.getElementById("list_products_button");
+                        listProductsButton.addEventListener("click", function () {
+                            window.location.href = "/getProduct";
+                        });
+            });
+            document.addEventListener("DOMContentLoaded", function () {
+                        var listCustomersButton = document.getElementById("list_customers_button");
+                        listCustomersButton.addEventListener("click", function () {
+                            window.location.href = "/getCustomer";
+                        });
+            });
         
     </script>
 </body>

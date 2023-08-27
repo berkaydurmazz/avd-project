@@ -4,30 +4,12 @@
 		<meta charset="UTF-8">
     	<meta name="viewport" content="width=device-width, initial-scale=1.0">
    	 	<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    	<title>Ürün Yorumları </title>
+    	<title>Müşteri Listesi </title>
 	</head>
 	<style>
 		table, th, td {
 		border:1px solid black;
 		}
-
-		.testimonial-section {
-            display: none;
-            /* Başlangıçta gizli olacak */
-            padding: 20px;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
-
-        .testimonial {
-            font-style: italic;
-            margin-bottom: 10px;
-        }
-
-        .testimonial-author {
-            font-weight: bold;
-        }
-
         footer {
             position: fixed;
             bottom: 0;
@@ -37,9 +19,7 @@
             padding: 10px 0;
             color: white;
             margin-top: 20px;
-            /* Beyaz şeridi kaldırmak için ekledik */
         }
-         /* Sağ üst köşedeki menü */
          .sidebar {
             position: fixed;
             top: 20px;
@@ -50,10 +30,10 @@
             justify-content: flex-end;
         }
     
-        .sidebar button {
-            background-color: #FFD700;
+		.sidebar button {
+            background-color:#bc0000;
             border: none;
-            color: #333;
+            color: #ffffff;
             padding: 6px 12px;
             font-size: 12px;
             border-radius: 3px;
@@ -62,9 +42,9 @@
             transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
         }
-    
+
         .sidebar button:hover {
-            background-color: #FFC800;
+            background-color: #ff0000;
             transform: scale(1.05);
         }
 		/* Tablo stilleri */
@@ -101,64 +81,19 @@
 			<button id="home-button">Ana Sayfa</button><br/>
 			<section class="search-section">
 				<div class="sidebar">
-					<button id="addProductButton">Ürün Ekle</button>
-					<script>
-						document.addEventListener("DOMContentLoaded", function () {
-							var addProductButton = document.getElementById("addProductButton");
-							addProductButton.addEventListener("click", function () {
-								window.location.href = "/addProduct";
-							});
-						});
-					</script>
-					</body>
-					<button id="list_products_button">Ürünleri Listele</button>
-					<script>
-						document.addEventListener("DOMContentLoaded", function () {
-							var listProductsButton = document.getElementById("list_products_button");
-							listProductsButton.addEventListener("click", function () {
-								window.location.href = "/getProduct";
-							});
-						});
-					</script>
-					 <button id="add_customer_button">Müşteri Ekle</button>
-					 <script>
-						document.addEventListener("DOMContentLoaded", function () {
-							var addCustomerButton = document.getElementById("add_customer_button");
-							addCustomerButton.addEventListener("click", function () {
-								window.location.href = "/addCustomer";
-							   // window.location.href = "musteriekle.html";
-							});
-						});
-					</script>
-				   <button id="list_customers_button">Müşteri Listele</button>
-					<script>
-						document.addEventListener("DOMContentLoaded", function () {
-							var listCustomersButton = document.getElementById("list_customers_button");
-							listCustomersButton.addEventListener("click", function () {
-								window.location.href = "/getCustomer";
-							   // window.location.href = "musterilistele.html";
-							});
-						});
-					</script>
-				</div>
-			</section>
-			<section class="result-section" id="result-section">
-				<!-- Sorgu sonuçları burada gösterilecek -->
-			</section>
-			<section class="testimonial-section" id="testimonial-section">
-				<!-- <h2>Müşteri Yorumları</h2> -->
-				<div class="testimonials-container" id="testimonials-container">
-					<!-- Yorumlar burada gösterilecek -->
+					<button id="list_products_button">Ürünleri Listele</button> 
+				   	<button id="list_customers_button">Müşteri Listele</button>
 				</div>
 			</section>
 		</header>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<div style="position: relative;">  
 		<table class="customer-table"style="width:100%">
 			<tr>
-			<th>customerName</th>
-			<th>Budget</th>
-			<th>customerEmail</th>
-			<th>Process</th>
+			<th>Müşteri Adı</th>
+			<th>Bütçe</th>
+			<th>Müşteri Email</th>
+			<th>İşlem</th>
 			</tr>
 			{%for product in data%}
 			<tr>
@@ -172,6 +107,8 @@
 				</tr>
 			{%endfor%}
 		</table>
+		<button id="add_customer_button" style="position: absolute; top: 50; right: 32% ; background-color: #bc0000; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Müşteri Ekle</button>
+	</div> 
 		<script>
 			document.addEventListener("DOMContentLoaded", function () {
 				const homeButton = document.getElementById("home-button"); // Ana Sayfa butonu
@@ -182,6 +119,25 @@
 				});
 	
 				
+			});
+			document.addEventListener("DOMContentLoaded", function () {
+                        var listProductsButton = document.getElementById("list_products_button");
+                        listProductsButton.addEventListener("click", function () {
+                            window.location.href = "/getProduct";
+                        });
+            });
+            document.addEventListener("DOMContentLoaded", function () {
+                        var listCustomersButton = document.getElementById("list_customers_button");
+                        listCustomersButton.addEventListener("click", function () {
+                            window.location.href = "/getCustomer";
+                        });
+            }); 
+			document.addEventListener("DOMContentLoaded", function () {
+							var addCustomerButton = document.getElementById("add_customer_button");
+							addCustomerButton.addEventListener("click", function () {
+								window.location.href = "/addCustomer";
+							   // window.location.href = "musteriekle.html";
+							});
 			});
 			
 		</script>

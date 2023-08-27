@@ -7,26 +7,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <title>Ürün Yorumları </title>
     <style>
-        /* Diğer stiller burada */
-
-        /* Yorum bölümü */
-        /* .testimonial-section {
-            display: none;
-            /* Başlangıçta gizli olacak 
-            padding: 20px;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
-
-        .testimonial {
-            font-style: italic;
-            margin-bottom: 10px;
-        }
-
-        .testimonial-author {
-            font-weight: bold;
-        } */
-
         footer {
             position: fixed;
             bottom: 0;
@@ -50,9 +30,9 @@
         }
     
         .sidebar button {
-            background-color: #FFD700;
+            background-color:#bc0000;
             border: none;
-            color: #333;
+            color: #ffffff;
             padding: 6px 12px;
             font-size: 12px;
             border-radius: 3px;
@@ -61,28 +41,30 @@
             transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
         }
-    
+
         .sidebar button:hover {
-            background-color: #FFC800;
+            background-color: #ff0000;
             transform: scale(1.05);
         }
-        body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f5f5f5; /* Açık gri arkaplan rengi */
-        color: #444;
-        line-height: 1.6;
-        }
+        /* Genel sayfa stilleri */
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5; /* Açık gri arkaplan rengi */
+  color: #000000;
+  line-height: 1.6;
+}
 
 /* Hakkında bölümü stilleri */
 .about-section {
-  padding: 20px;
+  padding: -30px;
   text-align: center;
-  background-color: #3498db; /* Parlak mavi arkaplan rengi */
-  color: #fff;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2); /* Hafif bir gölgelendirme */
-  border-radius: 10px; /* Köşeleri yuvarlatma */
+  background-color: #ffffff;
+  color: #000000;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 
 .about-section h2 {
@@ -176,6 +158,16 @@
 .centered-row .container {
   margin: 0 1%; /* Sağ ve sol boşluklar */
 }
+.paragraf-container {
+  width: 80%; /* Paragrafın genişliğini istediğiniz oranda ayarlayabilirsiniz */
+  margin: 0 auto; /* Paragrafı ortalamak için kullanılır */
+}
+
+.uzun-paragraf {
+  word-wrap: break-word; /* Kelimeleri gerektiğinde bölmek için kullanılır */
+  white-space: pre-line; /* Uzun satırları kırmak ve paragrafı düzgün bir şekilde görüntülemek için kullanılır */
+}
+
     </style>
 </head>
 
@@ -184,47 +176,10 @@
         <h1>Ürün Yorumları Web Sitesi</h1>
         <button id="home-button">Ana Sayfa</button><br/>
         <section class="search-section">
-            <div class="sidebar">
-                <button id="addProductButton">Ürün Ekle</button>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var addProductButton = document.getElementById("addProductButton");
-                        addProductButton.addEventListener("click", function () {
-                            window.location.href = "/addProduct";
-                        });
-                    });
-                </script>
-                </body>
-                <button id="list_products_button">Ürünleri Listele</button>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var listProductsButton = document.getElementById("list_products_button");
-                        listProductsButton.addEventListener("click", function () {
-                            window.location.href = "/getProduct";
-                        });
-                    });
-                </script>
-                 <button id="add_customer_button">Müşteri Ekle</button>
-                 <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var addCustomerButton = document.getElementById("add_customer_button");
-                        addCustomerButton.addEventListener("click", function () {
-                            window.location.href = "/addCustomer";
-                           // window.location.href = "musteriekle.html";
-                        });
-                    });
-                </script>
+          <div class="sidebar">
+            <button id="list_products_button">Ürünleri Listele</button> 
                <button id="list_customers_button">Müşteri Listele</button>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var listCustomersButton = document.getElementById("list_customers_button");
-                        listCustomersButton.addEventListener("click", function () {
-                            window.location.href = "/getCustomer";
-                           // window.location.href = "musterilistele.html";
-                        });
-                    });
-                </script>
-            </div>
+          </div>
         </section>
     </header>
     
@@ -232,27 +187,36 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const homeButton = document.getElementById("home-button"); // Ana Sayfa butonu
-
-            // Ana Sayfa butonuna tıklandığında
             homeButton.addEventListener("click", function () {
                 location.reload(); // Sayfayı yeniden yükle
             });
-
-            
         });
-        
+        document.addEventListener("DOMContentLoaded", function () {
+                        var listProductsButton = document.getElementById("list_products_button");
+                        listProductsButton.addEventListener("click", function () {
+                            window.location.href = "/getProduct";
+                        });
+            });
+            document.addEventListener("DOMContentLoaded", function () {
+                        var listCustomersButton = document.getElementById("list_customers_button");
+                        listCustomersButton.addEventListener("click", function () {
+                            window.location.href = "/getCustomer";
+                        });
+            }); 
     </script>
     <div class="about-section">
         <h2>Hakkımızda</h2>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic, deserunt natus, explicabo facilis ad autem maiores ea officia numquam reprehenderit commodi nam dolor in velit architecto magni obcaecati. Praesentium, fugiat?
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae suscipit in praesentium doloribus, non, quo modi voluptate adipisci quasi repellat possimus obcaecati voluptates magni, cupiditate aut vitae porro. Illo, minus?
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi, tenetur minus! Vel tempore voluptates placeat corrupti illum nam iure at vero officia facilis? Iste blanditiis accusamus dicta cum iure! Repellat.
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempora, adipisci explicabo tempore doloribus soluta. Libero et, voluptatibus vel nisi at velit iusto molestiae qui sapiente, ea, distinctio exercitationem? Maxime!
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi obcaecati error distinctio dignissimos aut voluptate nulla et ea autem nisi molestiae similique natus quidem numquam, consectetur illum, sunt velit quae!
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Placeat ipsum quo excepturi voluptates nihil exercitationem aliquid molestiae provident unde laudantium nesciunt nobis, et ex facilis accusamus vero molestias ea obcaecati!
+        <div class="paragraf-container">
+        <p class="uzun-paragraf" >AVD Danışmanlık Feed Forward Talent Program kapsamında "OpenAI Ürün Pazarlama Metinleri ve Kullanıcı Yorumu Oluşturma" başlığı altında geliştirilen bir projedir. 
+        Ekip üyelerimizin hepsi üniversite öğrencisi olmakla birlikte AVD Danışmanlık Feed Forward Talent Programında bir araya gelmiş ve bir takım oluşturmuşlardır.
+        Ekip Lideri ve Sözcüsü : Berkay Durmaz
+        Backend Developers : Berkay DURMAZ  , Taha Mert CEBECİK 
+        Frontend Developers : Rüveyda YILDIRIM , Ata Sarp GÖRENER , Mustafa Enes ÖZTÜRK
+        </p>
       </div>
+        </div>
       
-      <h2>Kişiler Hakkında</h2>
+      <h2>Ekibimiz</h2>
       
       <!-- İmaj overlay konteynırları -->
       <div class="container">
